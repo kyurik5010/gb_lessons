@@ -1,0 +1,4 @@
+sizeof int - 4
+sizeof char - 1
+sizeof long - 8
+sizeof float - 4
