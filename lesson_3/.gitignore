@@ -1,6 +1,0 @@
-cmake
-.idea
-.DS_Store
-CMakeLists.txt
-cmake-build-debug
-.gitkeep
