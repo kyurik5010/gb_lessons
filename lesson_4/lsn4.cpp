@@ -61,17 +61,10 @@ void task_4(){
     int x;
     cout << "Provide an integer for a check: ";
     cin >> x;
-    int dividers[x];
-
-    for(int j = 0; j <= x ; j++){
-        dividers[j] = j;
-    }
-
     size_t counter = 0;
-    size_t len = sizeof(dividers) / sizeof(dividers[0]);
 
-    for(int i = 1; i <= len; i++) {
-        if (x % dividers[i] == 0)
+    for(int i = 1; i <= x; i++) {
+        if (x % i == 0)
             counter++;
     }
 
@@ -87,23 +80,23 @@ void task_4(){
 //високосный. Вывести результаты работы программы в консоль.
 
 int main() { //task_5
-    task_1();
-    task_3();
+//    task_1();
+//    task_3();
     task_4();
-
+/*
     int yr;
 
     do{
         cout << "provide a year: ";
         cin.get();
         cin >> yr;
-    }while(yr < 1 || yr > 3000); // почему то Clion не начинает цикл, а меняет
-                                 // введенное отрицательное число в положительное. 
-                                 // с мобильника работает без проблем.
+        cout << endl << yr << endl;
+    }while(yr < 1 || yr > 3000); // почему то не работает условие yr < 1, программа преобразовывеат
+                                 // введенное отрицательное число в положительное
 
         if (((yr % 4 == 0) && (yr % 100 != 0)) || (yr % 400 == 0))
             cout << yr << " is a leap year";
         else
-            cout << yr << " is an ordinary year";
+            cout << yr << " is an ordinary year";*/
     return 0;
 }
