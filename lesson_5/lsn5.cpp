@@ -111,7 +111,7 @@ bool task_5(int *arr)
                 return true;
         }
     }
-    return false; // subject to change
+    return false;
 }
 
 int main(){
