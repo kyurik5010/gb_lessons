@@ -7,7 +7,7 @@
 #include <cstdlib>
 using namespace std;
 
-static size_t len; // для 4 задания
+static size_t len; // переменная для передачи длины массива в 4 задании
 
 //======================================================================================================================
 //1. Написать функцию которая выводит массив double чисел на экран. Параметры функции это сам массив и его размер.
@@ -71,7 +71,7 @@ void task_4(int *arr, int mv){
     }
     else if((mv < 0) && (mv != -len))
     {
-        shift = (mv * -2)/2;//перевод в числа в положительное
+        shift = (mv * -2)/2;//перевод в значения диапазона в положительное число
         int temp[shift];
         for(int i=0;i<shift;i++)//инициализация temp
             temp[i] = arr[i];
@@ -113,7 +113,7 @@ bool task_5(int *arr)
     }
     return false;
 }
-
+//======================================================================================================================
 int main(){
     srand(time(0));
 
@@ -141,10 +141,10 @@ int main(){
     //для task_5:
     cout << endl << "\n task_5: \narray - ";
     int balance[5];//{1,2,3,1,5}; //{1,2,3,4,5};
-    for(int i=0; i<5; i++)
+    for(int i : balance)
     {
-        balance[i] = rand() % 5 + 1;
-        cout << balance[i];
+        i = rand() % 5 + 1;
+        cout << i;
     }
     cout << endl << (task_5(balance) ? "true" : "false") << endl;
     return 0;
