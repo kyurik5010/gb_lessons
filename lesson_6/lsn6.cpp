@@ -60,7 +60,9 @@ void task_2(){
             cout << pparr[i][j] << " ";
         }
         cout << endl;
-    }
+    } //удалить строки тоже
+    for(int i=0;i<4;i++)
+        delete[] pparr[i];
     delete[] pparr;
 }
 

@@ -24,12 +24,14 @@ int main(int argc, char *argv[]){
             getline(text, buf);
             if(buf.find(argv[2]) != string::npos) {
                 cout << "\nword '" << argv[2] << "' found in line: \n..." << buf << "...\n\n";
+                text.close();
                 return 0;
             }
             else
                 continue;
         }
         cout << "word '" << argv[2] << "' was not found in file '" << argv[1] << "'\n";
+        text.close();
         return 0;
     }
     else
