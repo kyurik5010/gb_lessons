@@ -33,6 +33,7 @@ void task_1(){
             j = multiply(j);
         }
         delete [] ptr;
+
     }
     else {
         cout << "memory not available";
@@ -116,7 +117,7 @@ void task_4(string x, string y, string xy){
             getline(file_2, buf_2);
             buf_3 = buf_1 + buf_2 + "\n";
             file_3 << buf_3;
-            cout << buf_3 << endl;
+            cout << buf_3;
         }
         file_1.close();
         file_2.close();
@@ -131,12 +132,17 @@ void task_4(string x, string y, string xy){
 
 int main(){
     srand(time(0));
-
+    cout << "\n\n task_1\n\n";
     task_1();
+
+    cout << "\n\n task_2\n\n";
     task_2();
+
+    cout << "\n\n task_3\n\n";
     task_3();
 
     // task_4
+    cout << "\n\n task_4\n\n";
     string name_1, name_2, name_3;
     cout << "please indicate the files to merge \nand name the new file\n";
     cout << "1.:  ";
@@ -150,6 +156,7 @@ int main(){
     name_3 += ".txt";
     task_4(name_1, name_2, name_3);
 
+    cout << "task_5 is in task_.cpp";
     return 0;
 
 }
