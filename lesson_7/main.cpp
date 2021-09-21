@@ -1,4 +1,6 @@
 #include "mylib.h"
+#include <string>
+#include <fstream>
 #define SIZE 6
 #define cHK(a, b) ((a < b && a >= 0) ? "true" : "false")
 #define SwapINT(a, b) (a += b, b = a - b, a -= b)
@@ -52,16 +54,14 @@ void task_3(){
 //директивы pragma pack. Выделите динамически переменную этого типа. Инициализируйте ее. Выведите ее на экран и ее
 //размер с помощью sizeof. Сохраните эту структуру в текстовый файл.
 //=====================================================================================================================
-void task_4(){
-#pragma pack (push, 1)
-    struct Emplyee{
-        char name[10];
-        int age;
-        float salary;
-    };
-#pragma pack (pop)
 
-}
+#pragma pack(push, 1)
+struct Employee {
+    string name;
+    int age;
+    float salary;
+};
+#pragma pack(pop)
 
 int main(){
     //task_1 - task_5
@@ -72,7 +72,32 @@ int main(){
     std::cout << "\npositive - " << x << "\nnegative - " << SIZE - x << "\n\n";
     using namespace std;
 
-//    task_2();
+    task_2();
     task_3();
-//    task_4();
+//    task_4
+    
+    Employee *pEmp = new (std::nothrow) Employee;
+    pEmp -> name = "JohnSina";
+    pEmp -> age = 50;
+    pEmp -> salary = 500,50;
+
+    ofstream file("sina.txt");
+
+    if(file.is_open()) {
+        std::cout << "\n\nfile created";
+        file << "name - " << pEmp->name << std::endl;
+        file << "age - " << pEmp->age << std::endl;
+        file << "salary - " << pEmp->salary << std::endl;
+    }
+    else
+        std::cout << "\n\nbad file\n";
+
+    delete pEmp;
+    file.close();
+    if(!file.is_open())
+        std::cout << "\nfile closed\n";
+
+    return 0;
+
 }
+
