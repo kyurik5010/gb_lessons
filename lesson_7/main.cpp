@@ -53,13 +53,13 @@ void task_3(){
 //размер с помощью sizeof. Сохраните эту структуру в текстовый файл.
 //=====================================================================================================================
 void task_4(){
-#pragma pack (1)
+#pragma pack (push, 1)
     struct Emplyee{
         char name[10];
         int age;
         float salary;
     };
-#pragma pop
+#pragma pack (pop)
 
 }
 
