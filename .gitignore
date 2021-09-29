@@ -4,7 +4,6 @@
 
 testing
 cmake-build-debug
-.gitkeep
 .DS_Store
 .idea
 CMakeLists.txt
