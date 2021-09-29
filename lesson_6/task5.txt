@@ -1,5 +1,0 @@
-Write a program which checks whether a word specified by the user
-is present in a file indicated by the user (for the sake of simplicity
-we will use only latin characters). Use the find function which comes with
-strings std::string
-
