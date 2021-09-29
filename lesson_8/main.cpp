@@ -21,6 +21,7 @@ struct coords{
     int y;                                         // указание на индекс дочернего массива
 }coord;
 
+#pragma pack(push, 1)
 struct game{
     const size_t size = 3;
     char **pfield = new char* [size];
@@ -29,7 +30,7 @@ struct game{
     uint16_t turn : 1;                              // флаг для очередности ходов
     uint16_t is_running : 1;                        // флаг для основного цикла
 }gm;
-
+#pragma pack(pop)
 //========================================== первичные функции =========================================================
 
 void init_field(){ // первичная инициализация поля - вызывается из init_game()
