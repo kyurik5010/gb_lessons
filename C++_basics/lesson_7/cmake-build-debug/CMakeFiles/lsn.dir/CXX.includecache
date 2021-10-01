@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/urijmihajlovic/gb_lessons/lesson_7/main.cpp
+mylib.h
+/Users/urijmihajlovic/gb_lessons/lesson_7/mylib.h
+string
+-
+fstream
+-
+
+/Users/urijmihajlovic/gb_lessons/lesson_7/mylib.h
+iostream
+-
+

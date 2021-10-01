@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/urijmihajlovic/gb_lessons/lesson_6/lsn6.cpp
+iostream
+-
+fstream
+-
+cstdlib
+-
+string
+-
+

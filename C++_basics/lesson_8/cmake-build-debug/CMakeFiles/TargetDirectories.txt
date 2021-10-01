@@ -1,0 +1,3 @@
+/Users/urijmihajlovic/gb_lessons/C++_basics/lesson_8/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/urijmihajlovic/gb_lessons/C++_basics/lesson_8/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/urijmihajlovic/gb_lessons/C++_basics/lesson_8/cmake-build-debug/CMakeFiles/lesson_8.dir

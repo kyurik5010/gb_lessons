@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
+PROJECT(Lesson_6)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(lsn6 lsn6.cpp)

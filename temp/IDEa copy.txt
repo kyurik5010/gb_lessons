@@ -1,0 +1,62 @@
+voxel engine            |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+super hero action       |Defend the city against high-tech
+(physics-based)         |aliens, destructible env., physfun
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+druid (physics-based)   |manipulates plants, land, water and 
+                        |teakes over creatures to protect
+                        |his forest from intruders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+coding adventures       |(simulations)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+steampunk areial stuf   |sandbox, construction, sky whakes,  
+                        |whale oil, mantas, jungles,grapling hooks
+                        |parachuttes, gliders, vertical gameplay
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+destructive environments|(physics engine)
+and etc.                |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ussr alternative        | design document in directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cloud land adventures   |ispired by sky landscapes view
+                        |seen from the airplane 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jousting simulator      |physics fun,ranking, levelling
+                        |arena, weapons, colours customizing, 
+                        |dark humor, alcohol, a bit of
+                        |dark-aged day-to-day reality
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POPULOUS                |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drunk office tycoon     |(multiplayer - drunk employees 
+                        |freakout and hide from boss,
+                        |fun with physics and drunk 
+                        |physics like in GTA) maybe
+                        |voxel stylized
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+police station          | sim / voxel stilized?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ninja stealth game      |(mobile) individual levels that 
+                        |require avoiding spots of light, 
+                        |noize, traps, guards etc. with 
+                        |the goal of making stealth kills
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+appointment planner     |organizing planned appointments
+(BeBright)              |of custommers (beauty sphere)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tetris                  |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+memo cards              |app (need it ASAP)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dog fight               |WWI styled 2D aerial combat
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+snake                   |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+крестики - нолики       |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+------
+godot
+magicavoxel
+voxel plugin for UE4
+houdini
