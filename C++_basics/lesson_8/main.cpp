@@ -343,7 +343,7 @@ void game_loop(){
 
     if (reply == 'y'){
         init_field();
-        side_pick();
+        //side_pick();
         game_loop();}
 }                             //  основной игровой цикл
 

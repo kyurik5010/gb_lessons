@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main(
+//============================================== сортировка методом выбора =============================================
+    int *par = new (std::nothrow) int [5]{ 3, 4, 2, 5, 1};
+    if(!par){cout << "memo error"; delete[] par; par = nullptr; return 0;}
+
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = i; j < 5; j++) // j = i чтобы не трогать уже отсортированные значения в начале массива
+        {
+            if (par[j] < par[i])
+            {
+                swap(par[i], par[j]); // стандартная функция свап
+            }
+//            cout << " | par[i] - " << par[i];
+        }
+//        cout << endl << par[0] << " " << par[1] << " " << par[2] << " " << par[3] << " " << par[4] << " " << endl;
+    }
+
+    for(int i=0; i<5; i++)
+        cout << par[i] << " ";
+
+    delete[] par;
+    par = nullptr;
+
+    return 0;
+}
