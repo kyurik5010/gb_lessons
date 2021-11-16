@@ -21,12 +21,12 @@ int main(){
     printf("\n%d", recPower(*Nptr, *Pptr));
     printf("\n%d", num);
 
-    //задание
+    /*//задание
     printf("\n\nЗадание 2.2:\nВведите число и степень: ");
     fflush(stdout);
     scanf("%d%d", &num, &power);
     printf("\n%d", recPow_2(*Nptr, *Pptr));
-    printf("\n%d", num);
+    printf("\n%d", num);*/
     return 0;
 }
 
@@ -52,7 +52,7 @@ int recPower(int num, int power) // задание 2
     num = k;
     return num;
 }
-
+/*
 int recPow_2(int num, int pow)
 {
     int k = 0
@@ -63,4 +63,4 @@ int recPow_2(int num, int pow)
     else
         k = num * recPow_2(num, pow-1);
     return k;
-}
+}**/
