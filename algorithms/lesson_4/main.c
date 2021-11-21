@@ -19,7 +19,7 @@ int main(){
     scanf("%d%d", &num, &power);
     printf("\n%d", recPower(*Nptr, *Pptr));
 
-//    задание 2.2
+    //задание 2.2
     printf("\n\nЗадание 2.2:\nВведите число и степень: ");
     fflush(stdout);
     scanf("%d%d", &num, &power);
@@ -41,15 +41,12 @@ int recBinary(int x) // задание 1
 
 int recPower(int num, int power) // задание 2
 {
-    int k = 0;
     if(power == 1)
         return num;
-    k = num * recPower(num, power - 1);
-    num = k;
-    return num;
+    return num * recPower(num, power - 1);
 }
 
-int recPow_2(int num, int pow)
+int recPow_2(int num, int pow)  // задание 2.2
 {
     if(pow == 1)
         return num;

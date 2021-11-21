@@ -34,36 +34,14 @@ using namespace std;
 //    return 0;
 //}
  int main(){
-//     // = {'.','.','.','.','.'}
-//
-//     char arr[4][5];
-//     char sym[3] = {47,32,92};
-//     //char arr_2[] = {'e','d','c','b','a'};
-//     for(int j = 0; j<4; j++){
-//         for(int i=0;i<5;i++) {
-//             //std::swap(arr_1[j], arr_2[j]);
-//             //arr[j][i] = '.';
-//             switch(j){
-//                 case 2: {
-//                     i = 4;
-//                     if(i==4)
-//                         arr[j][i] = 47;
-//                 }
-//                     break;
-//                 case 3:
-//                     if
-//             }
-//             std::cout << arr[j][i];
-//         }
-//         cout << endl;
-//     }
-
-    int x,y,z=0,i=0;
-    cin >> x >> y;
-    while(i<y){
-        z += x;
-        ++i;
-    }
-    cout << x << " * " << y << " = " << z;
+    int arr[] = {8,4,5,7,3,9,1,6,2} ;
+    for(int i=0;i<sizeof(arr)/sizeof(arr[0]);++i)
+        for(int j=i+1;j<sizeof(arr)/sizeof(arr[0]);++j)
+        {
+            if(arr[i] > arr[j])
+                swap(arr[i], arr[j]);
+        }
+    for(auto x : arr)
+        cout << x << ", ";
     return 0;
  }
