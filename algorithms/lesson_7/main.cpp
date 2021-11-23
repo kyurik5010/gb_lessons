@@ -41,18 +41,19 @@ void Qsort(int *arr, int first, int last)
             arr[current+1] = tmp;
         }
     }
-    else {//    printf("\nfirst-%d pivot-%d last-%d", arr[F], P, arr[L]);
-        do {
+    else {
+//    printf("\nfirst-%d pivot-%d last-%d", arr[F], P, arr[L]);
+        
             int F = first; 
             int L = last; 
             int P = (last+1)/2;
             // определить медиану
-
+         
             if((F>P)&&(F<L))
                 swap(&arr[F],&arr[P]);
             else if((L>F)&&(L<P))
                 swap(&arr[L],&arr[P]);
-
+     do{
 //          std::cout << "\nruning cycle " << "F-" << F << " L-" << L;
             while (arr[F] < P) { ++F; }
             while (arr[L] > P) { --L; }
