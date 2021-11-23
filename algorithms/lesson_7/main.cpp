@@ -25,9 +25,7 @@ int main() {
 void Qsort(int *arr, int first, int last)
 {
 //    std::cout << "\n\nstarting quick sort";
-    int F = first; //0
-    int L = last; //9
-    int P = arr[(first+last)/2]; // arr[4] - 8
+     // arr[4] - 8
     if (last+1 <= 10)
     {
         int tmp,current;
@@ -45,10 +43,17 @@ void Qsort(int *arr, int first, int last)
     }
     else {//    printf("\nfirst-%d pivot-%d last-%d", arr[F], P, arr[L]);
         do {
-
+            int F = first; 
+            int L = last; 
+            int P = (last+1)/2;
             // определить медиану
 
-//        std::cout << "\nruning cycle " << "F-" << F << " L-" << L;
+            if((F>P)&&(F<L))
+                swap(&arr[F],&arr[P]);
+            else if((L>F)&&(L<P))
+                swap(&arr[L],&arr[P]);
+
+//          std::cout << "\nruning cycle " << "F-" << F << " L-" << L;
             while (arr[F] < P) { ++F; }
             while (arr[L] > P) { --L; }
             if (arr[F] >= arr[L]) {
