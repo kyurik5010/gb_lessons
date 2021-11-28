@@ -34,14 +34,8 @@ using namespace std;
 //    return 0;
 //}
  int main(){
-    int arr[] = {8,4,5,7,3,9,1,6,2} ;
-    for(int i=0;i<sizeof(arr)/sizeof(arr[0]);++i)
-        for(int j=i+1;j<sizeof(arr)/sizeof(arr[0]);++j)
-        {
-            if(arr[i] > arr[j])
-                swap(arr[i], arr[j]);
-        }
-    for(auto x : arr)
-        cout << x << ", ";
-    return 0;
+     int x = 4;
+     x %= 10;
+     cout << x;
+     return 0;
  }

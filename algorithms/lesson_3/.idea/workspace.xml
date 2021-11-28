@@ -7,17 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaca5398-5164-4c3c-aeb1-1dec10e8bee8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../lesson_1/lsn_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lesson_1/lsn_1_1.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lesson_1/lsn_1_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lesson_2/lsn_2_1.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lesson_2/lsn_2_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lesson_2/lsn_2_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/lesson_3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/lesson_3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../temp/cmake-build-debug/CMakeFiles/tmp.dir/func.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../../temp/cmake-build-debug/CMakeFiles/tmp.dir/func.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../temp/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../temp/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../temp/cmake-build-debug/tmp" beforeDir="false" afterPath="$PROJECT_DIR$/../../temp/cmake-build-debug/tmp" afterDir="false" />
@@ -59,6 +49,7 @@
       <workItem from="1637485043833" duration="35000" />
       <workItem from="1637485084476" duration="2000" />
       <workItem from="1637485312229" duration="7000" />
+      <workItem from="1638131129756" duration="36000" />
     </task>
     <servers />
   </component>
