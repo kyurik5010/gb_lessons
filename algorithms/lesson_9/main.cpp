@@ -115,48 +115,34 @@ void push_back(int x)
         return;
     }
     else
-        std::cout<<"Stack overflow";
+        std::cout<<"\nStack overflow";
 }
 void pop()
 {
-    if(coursor>0)
-        std::cout<<Stack[coursor--];
-    else
-        std::cout << "Stack is empty";
-
-//    for (int i = coursor; i > 0 ; --i) {
-//        std::cout<<Stack[]
-//    }
+    if(coursor>=0) {
+        std::cout << Stack[coursor];
+        --coursor;
+    }
+    else {
+        std::cout << "\nStack is empty";
+        return;
+    }
 }
-//int x, i;
-//int result[100];
-//printf("Provide an integer please ");
-//scanf("%i", &x);
-//for(i=0;x>=1;i++){
-//  result[i] = x % 2;
-
-//  else if(x==1)
-//      result[i] = 1;
-//  x /= 2;
-
-//int temp;
-//if(x==0 || x==1) {
-//    printf("%d", x);
-//    return 0; }
-//temp = x%2;
-//binary(x/2);
-//printf("%d", temp);
 
 int binary(int x){
-    while(x>1) {
-        push_back(x % 2);
-        binary(x/=2);
+    while(x>1)
+    {
+        push_back(x%2);
+        x/=2;
     }
-    for (int i = 0; i < coursor; ++i) {
+    if(x==0||x==1)
+        push_back(x);
+    for (int i = coursor; i > -1; --i)
         pop();
-    }
     return 0;
 }
+
+
 
 //======================================================================================================================
 int main() {
@@ -164,6 +150,6 @@ int main() {
 //    task_1();
 
     /** Задание 2 */
-    binary(237);
+    binary(454);
     return 0;
 }
