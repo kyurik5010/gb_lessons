@@ -25,7 +25,7 @@ void push(Stack *stack, char par)
     stack->size++;
 }
 
-char pop(Stack*stack, char par){
+char pop(Stack*stack){
     if(stack->size==0)
     {
         std::cout<<"\nStack is empty";
@@ -62,6 +62,22 @@ void printOLCS(Stack *stack){
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Stack *stack = new Stack;
+    init(stack);
+    printf("введите выражение\nпо завершении ввода нажмите Ctrl+D");
+    fflush(stdout);
+    char x;
+    while(scanf("%c", &x))
+    {
+        if(x=='('||x=='{'||x=='[')
+        {
+            push(stack,x);
+        }
+        if(x==')'||x=='}'||x==']')
+        {
+            pop(stack);
+        }
+    }
+    printOLCS(stack);
     return 0;
 }
