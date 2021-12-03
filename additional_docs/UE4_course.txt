@@ -1,0 +1,80 @@
+Курсы
+Основы работы с Unreal Engine 
+
+Введение. Подготовка к разработке на Unreal Engine 4
+Основные объекты. Жизненный цикл. Перемещение в мире
+Повороты. Создание объектов
+Стрельба. Столкновения
+Интерфейсы. Компоненты. События и делегаты
+Искусственный интеллект. Эффекты
+Уровни. Отложенное создание акторов
+Физика и её симуляция. Сборка проекта
+1 месяц — 8 уроков
+UE4 UI
+
+UMG: знакомство
+UMG: базовые виджеты и их особенности
+UMG. Привязка виджетов в С++ и создание менеджера виджетов
+Slate. Основы инициализации классов и передача аргументов
+Slate: стили
+Slate и UMG: Drag&Drop
+Инвентарь: базовая система
+Инвентарь: экипировка
+1 месяц — 8 уроков
+UE4 Plugins/Modules
+
+Modules. Что такое модуль, и как происходит загрузка модулей в UE4
+Разработка инвентаря. Создаем базовый виджет инвентаря
+Unreal Save System. Разработка инвентаря. Смотрим базовое сохранение данных и загрузки(Blueprints Only)
+Unreal Save System. Продолжение.Разработка инвентаря. Рассматриваем сериализацию и как сохранять данные.(C++)
+Разработка инвентаря. Сохраняем и грузим результат
+Разработка инвентаря. Часть 1
+Разработка инвентаря. Часть 2
+Media Player. Создаем плагин для отображения видео и аудио на текстуре.
+
+Курсы
+UE4 Mobile
+
+IOS, Android. Введение в мобильную разработку и настройку проекта под UE4
+IOS, Android. Интеграция и сборка библиотеки pugiXml под IOS/Android
+IOS, Android. Написание кросс-платформенной обертки для IOS/Android
+IOS, Android. Разработка интерфейса для сохранения игр и загрузки под IOS/Android
+Interactive materials
+Анимации. Введение. Anim Instance, Animation Blueprint.State Machine
+Анимации написание своего FootIK Solver
+AI Введение работа с базовыми типами AIContoller, BT, BB
+1 месяц — 8 уроков
+UE4 Multiplayer/Dynamic Asset
+
+Динамическая загрузка ассетов. Введение. TSoftObjectPtr.TryLoad
+Динамическая загрузка ассетов. Асинхронная загрузка ассетов. Asset Manager
+Mounting Pak Manager
+Blueprints Multiplayer.(Fast Prototype) Part 1
+Blueprints Multiplayer.(Fast Prototype) Part 2
+Мультиплеер. Client Server Architecture. Ping Pong Part1
+Мультиплеер. Replications.RPC,RepNotify. Ping Pong Part2
+Мультиплеер. Dedicated Server. Ping Pong Part3
+1 месяц — 8 уроков
+
+Курсы
+UE4 OpenWorld
+
+Создаём кросс-платформенный Input(Mobile,Desktop,Gamepad)
+Создаём кросс-платформенный Input(Mobile,Desktop,Gamepad)
+Localization Tools
+Traces/Physics Part 1.AABB Collision,Line Trace
+Traces/Physics Ragdoll,Rope Component
+Making Simple Physics Game
+Open World Tools Part 1
+Open World Tools Part 2
+
+UE4 2D/Optimizations
+
+Paper 2D Part 1 Introduction
+Paper 2D Part 2 Making Simple 2D Game
+Level Streaming Part 1
+Level Streaming Part 2
+Packaging Games
+Shaders Introducion
+Shaders Advanced Topics
+Debugging/Profiliing
