@@ -57,7 +57,7 @@ tree_node* Tinsert(tree_node *t, int key){ //t это корень дерева,
     return tn;
 }
 
-void Tprint(tree_node *t){
+void Tprint(tree_node *t){  // печать дерева, "#n" - лист
     tree_node *itr = t;
     if(itr != NULL)
     {
@@ -68,25 +68,26 @@ void Tprint(tree_node *t){
             if (itr->right)
                 Tprint(itr->right);
             else
-                std::cout<<"NULL";
+                std::cout<<"N";
             std::cout << ",";
             if (itr->left)
                 Tprint(itr->left);
             else
-                std::cout<<"NULL";
+                std::cout<<"N";
             std::cout<<")";
         }
         else
             std::cout<<"n";
     }
     else
-        std::cout<<"NULL";
+        std::cout<<"N";
 }
 
-int node_counter(tree_node *t)
+//================================================= Задание 1 ==========================================================
+
+int node_counter(tree_node *t)  // счетчик узлов
 {
     int nodes = 0;
-    //std::cout<<"\ncounting nodes ...";
     if(t)
     {
         if(t->right || t->left) {
@@ -100,7 +101,7 @@ int node_counter(tree_node *t)
     return nodes;
 }
 
-bool isBalanced(tree_node *t)
+bool isBalanced(tree_node *t) // проверка баланса в деревьях
 {
     int right = node_counter(t->right);
     int left = node_counter(t->left);
@@ -111,7 +112,7 @@ bool isBalanced(tree_node *t)
         return (left-right <= 2);
 }
 
-tree_node* Tdelete(tree_node *t){
+tree_node* Tdelete(tree_node *t){  // освобождение памяти
     if(t)
     {
         delete Tdelete(t->right);
@@ -153,20 +154,38 @@ void tpass(tree_node *t){ //для дебага
 //    }
 }
 
-void Tsearch(tree_node *t, int item){
+double task_1(){
+    double count = 0;
+    tree_node *ntree;
+    for (int i = 0; i < 50; ++i) {
+        ntree = Tinsert(NULL, rand()% 98+1);
+        for (int j = 0; j < 10000; ++j) {
+            Tinsert(ntree, rand()% 98+1);
+        }
+        //std::cout<<"tree nr."<<i+1<<" created, root-"<<ntree->key<<"\n";
+        count += (isBalanced(ntree))? 1 : 0;
+        delete Tdelete(ntree);
+        ntree = NULL;
+    }
+    return count/0.5;
+}
+
+//================================================= Задание 2 ==========================================================
+
+int Tsearch(tree_node *t, int item){
     tree_node *itr = t;
     while(itr) {
-        itr = (itr->key > item) ? itr->left : itr->right;
+        if(itr->key != item)
+            itr = (itr->key > item) ? itr->left : itr->right;
+        else
+            return item;
     }
-    if (itr->key == item)
-        std::cout << "\nitem was found";
-    else
-        std::cout << "\nitem was not found";
+    return 0;
 }
 
 void task_2(){
     int key, item;
-    int max = 10;
+    int max = 20;
     tree_node *tree = Tinsert(NULL, rand()% 98+1);
     for (int i = 0; i < max; ++i) {
         Tinsert(tree, rand()% 98+1);
@@ -178,45 +197,17 @@ void task_2(){
     Tprint(tree);
     item = rand()% 98+1;
     std::cout << "\nsearching item "<<item;
-    Tsearch(tree,item);
-
-//    delete Tdelete(tree);
-//    delete tree;
-}
-
-double task_1(){
-    double count = 0;
-    tree_node *ntree;
-    for (int i = 0; i < 50; ++i) {
-        ntree = Tinsert(NULL, rand()% 98+1);
-        for (int j = 0; j < 10000; ++j) {
-            Tinsert(ntree, rand()% 98+1);
-        }
-        std::cout<<"tree nr."<<i+1<<" created, root-"<<ntree->key<<"\n";
-        count += (isBalanced(ntree))? 1 : 0;
-        delete Tdelete(ntree);
-        ntree = NULL;
-    }
-    //delete ntree;
-    return count/0.5;
+    if(Tsearch(tree,item))
+        std::cout << "\nitem was found - " << item;
+    else
+        std::cout << "\nitem "<<item<<" was not found";
+    delete Tdelete(tree);
 }
 
 int main() {
     srand(time(0));
-//    std::cout<<"\n"<<task_1()<<"% from 50 trees were balanced";
+    std::cout<<"\n"<<task_1()<<"% from 50 trees were balanced\n\n";
     task_2();
-
-
-
-
-//    printf("\n");
-//    Tprint(ntree);
-//    std::cout<<"\ntree contains "<<node_counter(ntree)<<" nodes";
-//    std::cout<<"\ntree "<<((isBalanced(ntree))? "is " : "is not ")<<"balanced";
-//    delete Tdelete(ntree);
-//    std::cout<<"\ntree deleted root->key = "<<ntree->key;
-//    //Tprint(ntree);
-//    //std::cout<<"\n"<<node_counter(ntree);
-//    //tpass(ntree);
+// прошу подсказать правильно ли у меня организовано удаление деревьев Tdelete()
     return 0;
 }
