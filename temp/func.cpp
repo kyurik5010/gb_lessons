@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <cstdlib>
 
 using namespace std;
 
@@ -33,9 +34,23 @@ using namespace std;
 //    cout << n << "!" << " = " << factorial(n) << endl;
 //    return 0;
 //}
+
+void test(int *arr ,char c[]){
+    int temp;
+    for (int i = 0; i < 6; ++i) {
+        arr[i] = c[i] - '0'; // перевод единичной чар в число
+    }
+
+//    int temp = atoi(c);
+//    fgets(temp,80, stdin)
+}
+
  int main(){
-     int x = 4;
-     x %= 10;
-     cout << x;
+    int arr[6];
+    test(arr, "010011");
+     for (int i = 0; i < 6; ++i) {
+         cout << arr [i] << endl;
+     }
+
      return 0;
  }
