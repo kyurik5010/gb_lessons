@@ -209,16 +209,17 @@ int nbr_check(int **matrix, Node *n, int point, int size){
     return nbr;
 } // счетчик соседей
 
-void meta_print(Queue *q){
+void meta_print(Queue *q){      // функция вывода точек в порядке уменьшения степени полузахода
     Node *itr = q->head;
     int HRun = 0;
-    while(itr){     //поиск максимального значения переменной meta2
+    while(itr){                 // поиск максимального значения meta1 (степень полузахода)
         if(itr->meta1 > HRun)
             HRun++;
         itr = itr->next;
     }
+
     itr = q->head;
-    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); // вывод точек графа в порядке уменьшения степени полузахода
+    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     for ( ; HRun >= 1; --HRun) {
         while(itr){
             if(itr->meta1 == HRun)
@@ -231,7 +232,6 @@ void meta_print(Queue *q){
 
 void dtrav_count(int **matrix, Stack *s, Queue *q, int size){
     int start = s->tail->dat;
-    int nbr = 0;                                                 // счетчик соседей
     int edg = 0;                                                 // счетчик ребер
     if(s->tail)
         stack_pop(s);                                      // удаление из стека текущей точки
@@ -251,8 +251,8 @@ void dtrav_count(int **matrix, Stack *s, Queue *q, int size){
     else {
         printf("\nTraverse complete");
         q->head->meta2 = nbr_check(matrix, q->head, q->head->dat, size);// подсчет соседей
-        q_print(q);
-        meta_print(q);
+        q_print(q);    // вывод точек порядка обхода графа
+        meta_print(q); // вывод списка точек в порядке уменьшения степени полузахода
     }
 } // обход с подсчетом
 
@@ -281,6 +281,8 @@ void task_2(){ printf("\n\nЗадание 2\n");
     stack_push(s, start);              //начальная точка
     printf("\nStarting traverse from point %d", s->tail->dat);
     dtrav_count(matrix, s, q, n);
+
+
     for (int i = 0; i < n; ++i) {
         delete[] matrix[i];
         matrix[i] = NULL;
