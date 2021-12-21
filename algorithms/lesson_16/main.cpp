@@ -30,27 +30,40 @@ void task_1(){
 //=================================================  ЗАДАНИЕ 2 =========================================================
 
 void Mix_encrypt(char *c, int columns){
-//    int line = (int) sqrt((double) size);
-//    char **table = new char *[2];
-//    for (int i = 0; i < 2; ++i) {
-//        table[i] = new char [columns+1];
-//    }
+    char **table = new char *[columns];
+    for (int i = 0; i < columns; ++i)
+        table[i] = new char [columns];
     int size = 0;
-    while(*c != 0){
+    while(*c){
         ++size;
         ++c;
     }
-    if (size % 2 != 0)
-        
-    int len = columns+1;
-    char table[2][columns+1];
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < columns+1; ++j) {
-            table[i]
+    int i = 1, k = 0, j = 0;
+    while(i<=columns*columns)
+    {
+        if(i%columns == 0 && k < columns) {
+            ++k;
+            j = 0;
         }
+        else
+            break;
+        if(*c == 0) {
+            table[k][j] = '_';
+            ++j;
+            ++i;
+            continue;
+        }
+        table[k][j] = c[i-1];
+        ++i;
+        ++j;
     }
+    std::cout<<"\nThe matrix:\n";
+    for (int r = 0; r < columns; ++r) {
+        for (int l = 0; l < columns; ++l) {
+            printf("%c",table[r][l]);
+        }
 
-
+    }
 }
 
 void Mix_decrypt(char *c, int columns){
@@ -59,11 +72,20 @@ void Mix_decrypt(char *c, int columns){
 
 void task_2(){
     printf("\n\nЗадание_2");
-    char c[] = "Thisissomesentence";
-    int size = sizeof(c)/sizeof(c[0]);
-    int columns = size/2;
+    char c[] = "This is some random phrase";
+    printf("\nOriginal phrase - ");
+    fputs(c, stdout);
+    fflush(stdout); // just in case
+    int size = sizeof(c)/sizeof(c[0]) - 1; // минус терминант
+    double temp = sqrt(size/1);
+    int columns;
+    if(temp - (int) temp != 0)
+        columns = (int) temp+1; // для квадратного массива
+    else
+        columns = (int) temp;
     printf("\nsize - %d, columns - %d", size, columns);
-
+    //printf("\n%f", sqrt(size/1) - (int)sqrt(size/1));
+    Mix_encrypt(c,columns);
     // не успел :(
 }
 
