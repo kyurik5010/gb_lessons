@@ -29,68 +29,114 @@ void task_1(){
 }
 //=================================================  ЗАДАНИЕ 2 =========================================================
 
-void Mix_encrypt(char *c, int columns){
+void Mix_encrypt(char *w, int columns) {
+
+    int size = 0;
+    while (*w) {
+        ++size;
+        ++w;
+    }
+    w -= size; // вернуть указатель на место
+
+    ++columns; // обеспечить запас пространства
+
     char **table = new char *[columns];
     for (int i = 0; i < columns; ++i)
-        table[i] = new char [columns];
-    int size = 0;
-    while(*c){
-        ++size;
-        ++c;
-    }
-    int i = 1, k = 0, j = 0;
-    while(i<=columns*columns)
-    {
-        if(i%columns == 0 && k < columns) {
-            ++k;
-            j = 0;
-        }
-        else
-            break;
-        if(*c == 0) {
-            table[k][j] = '_';
-            ++j;
-            ++i;
-            continue;
-        }
-        table[k][j] = c[i-1];
-        ++i;
-        ++j;
-    }
-    std::cout<<"\nThe matrix:\n";
+        table[i] = new char[columns];
+
+    printf("\n");
     for (int r = 0; r < columns; ++r) {
         for (int l = 0; l < columns; ++l) {
-            printf("%c",table[r][l]);
+            if (*w) {
+                table[r][l] = *w;
+                ++w;
+            } else
+                table[r][l] = '_';
         }
-
     }
+
+
+    std::cout << "\nThe matrix:\n";
+    for (int r = 0; r < columns; ++r) {
+        for (int l = 0; l < columns; ++l) {
+            printf("%c ", table[r][l]);
+        }
+        printf("\n");
+    }
+
+    for (int r = 0; r < columns; ++r) { // смещение столбцов
+        for (int l = 0; l < columns; l += 2) {
+            if(table[r][l+1] == '_')
+                continue;
+            char temp = table[r][l];
+            table[r][l] = table[r][l + 1];
+            table[r][l + 1] = temp;
+        }
+    }
+    std::cout << "\nThe matrix_2:\n";
+    for (int r = 0; r < columns; ++r) {
+        for (int l = 0; l < columns; ++l) {
+            printf("%c ", table[r][l]);
+        }
+        printf("\n");
+    }
+
+    for (int r = 0; r < columns; r+=2) { // смещение строк
+        for (int l = 0; l < columns; ++l) {
+            if(table[r+1][l] == '_')
+                continue;
+            char temp = table[r][l];
+            table[r][l] = table[r+1][l];
+            table[r+1][l] = temp;
+        }
+    }
+    std::cout<<"\nThe matrix_3:\n";
+    for (int r = 0; r < columns; ++r) {
+        for (int l = 0; l < columns; ++l) {
+            printf("%c ",table[r][l]);
+        }
+        printf("\n");
+    }
+
+    for (int r = 0; r < columns; ++r) {  // запись в обратном порядке и возвращение указателя на место
+        for (int l = 0; l < columns; ++l) {
+            if (table[r][l] != '_') {
+                *w = table[r][l];
+                --w;
+            }
+        }
+        delete[] table[r]; // параллельно освобождаю память
+    }
+    delete[] table;
 }
 
 void Mix_decrypt(char *c, int columns){
-
+    //померить размер массива
+    //выделить массив с запасом
+    //записать в обратном порядке и вернуть указатель на место
+    //сместить строки
+    //сместить столбцы
+    //записать значения в оригинальный массив в прямом порядке
+    //освободить память
 }
 
 void task_2(){
     printf("\n\nЗадание_2");
-    char c[] = "This is some random phrase";
+    char w[] = "This is some random phrase";
     printf("\nOriginal phrase - ");
-    fputs(c, stdout);
-    fflush(stdout); // just in case
-    int size = sizeof(c)/sizeof(c[0]) - 1; // минус терминант
-    double temp = sqrt(size/1);
-    int columns;
-    if(temp - (int) temp != 0)
-        columns = (int) temp+1; // для квадратного массива
-    else
-        columns = (int) temp;
-    printf("\nsize - %d, columns - %d", size, columns);
-    //printf("\n%f", sqrt(size/1) - (int)sqrt(size/1));
-    Mix_encrypt(c,columns);
-    // не успел :(
+    fputs(w, stdout);
+    int size = sizeof(w)/sizeof(w[0]) - 1; // минус терминант
+    int columns = (int) sqrt(size/1);
+
+    Mix_encrypt(w,columns);
+    printf("\nEncrypted phrase - ");
+    fputs(w, stdout);
+
+    // дешифровку организовать еще не успел :(
 }
 
 int main() {
-    task_1();
+    //task_1();
     task_2();
     return 0;
 }
