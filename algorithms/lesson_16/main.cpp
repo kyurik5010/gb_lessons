@@ -38,8 +38,8 @@ void Mix_encrypt(char *w, int columns) {
     }
     w -= size; // вернуть указатель на место
 
-    ++columns; // обеспечить запас пространства
-
+    ++columns; // обеспечить запас
+    // выделить память и записать значения
     char **table = new char *[columns];
     for (int i = 0; i < columns; ++i)
         table[i] = new char[columns];
@@ -54,17 +54,8 @@ void Mix_encrypt(char *w, int columns) {
                 table[r][l] = '_';
         }
     }
-
-
-    std::cout << "\nThe matrix:\n";
+    // сместить столбцы
     for (int r = 0; r < columns; ++r) {
-        for (int l = 0; l < columns; ++l) {
-            printf("%c ", table[r][l]);
-        }
-        printf("\n");
-    }
-
-    for (int r = 0; r < columns; ++r) { // смещение столбцов
         for (int l = 0; l < columns; l += 2) {
             if(table[r][l+1] == '_')
                 continue;
@@ -73,15 +64,8 @@ void Mix_encrypt(char *w, int columns) {
             table[r][l + 1] = temp;
         }
     }
-    std::cout << "\nThe matrix_2:\n";
-    for (int r = 0; r < columns; ++r) {
-        for (int l = 0; l < columns; ++l) {
-            printf("%c ", table[r][l]);
-        }
-        printf("\n");
-    }
-
-    for (int r = 0; r < columns; r+=2) { // смещение строк
+    // сместить строки
+    for (int r = 0; r < columns; r+=2) {
         for (int l = 0; l < columns; ++l) {
             if(table[r+1][l] == '_')
                 continue;
@@ -90,35 +74,22 @@ void Mix_encrypt(char *w, int columns) {
             table[r+1][l] = temp;
         }
     }
-    std::cout<<"\nThe matrix_3:\n";
-    for (int r = 0; r < columns; ++r) {
-        for (int l = 0; l < columns; ++l) {
-            printf("%c ",table[r][l]);
-        }
-        printf("\n");
-    }
 
-    for (int r = 0; r < columns; ++r) {  // запись в обратном порядке и возвращение указателя на место
+    w -= size;
+    // записать значения в оригинальный массив и освободить память
+    for (int r = 0; r < columns; ++r) {
         for (int l = 0; l < columns; ++l) {
             if (table[r][l] != '_') {
                 *w = table[r][l];
-                --w;
+                ++w;
             }
         }
-        delete[] table[r]; // параллельно освобождаю память
+        delete[] table[r];
     }
     delete[] table;
+    w -= size;
 }
 
-void Mix_decrypt(char *c, int columns){
-    //померить размер массива
-    //выделить массив с запасом
-    //записать в обратном порядке и вернуть указатель на место
-    //сместить строки
-    //сместить столбцы
-    //записать значения в оригинальный массив в прямом порядке
-    //освободить память
-}
 
 void task_2(){
     printf("\n\nЗадание_2");
@@ -132,11 +103,16 @@ void task_2(){
     printf("\nEncrypted phrase - ");
     fputs(w, stdout);
 
-    // дешифровку организовать еще не успел :(
+    size = sizeof(w)/sizeof(w[0]) - 1;
+    columns = (int) sqrt(size/1);
+    Mix_encrypt(w, columns);   // эта же функция расшифрует текст
+    printf("\nDecrypted phrase - ");
+    fputs(w, stdout);
+
 }
 
 int main() {
-    //task_1();
+    task_1();
     task_2();
     return 0;
 }
