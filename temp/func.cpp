@@ -35,22 +35,33 @@ using namespace std;
 //    return 0;
 //}
 
-void test(int *arr ,char c[]){
-    int temp;
-    for (int i = 0; i < 6; ++i) {
-        arr[i] = c[i] - '0'; // перевод единичной чар в число
-    }
+//void test(int *arr ,char c[]){
+//    int temp;
+//    for (int i = 0; i < 6; ++i) {
+//        arr[i] = c[i] - '0'; // перевод единичной чар в число
+//    }
 
 //    int temp = atoi(c);
 //    fgets(temp,80, stdin)
-}
+//}
+
+typedef struct Node{
+    char *item;                // сюда можно пихать сразу строку
+    Node *next;
+}Node;
 
  int main(){
-    int arr[6];
-    test(arr, "010011");
-     for (int i = 0; i < 6; ++i) {
-         cout << arr [i] << endl;
-     }
+//    int arr[6];
+//    test(arr, "010011");
+//     for (int i = 0; i < 6; ++i) {
+//         cout << arr [i] << endl;
+//     }
+    Node *p = new Node;         // итерация указателем по массиву чар
+    p -> item = "abrakadabra";  // передача массива чар в указатель *item
+                                // устаревший вариант
+    printf("%s",p->item);       // считывание строки из указателя
 
-     return 0;
+
+
+    return 0;
  }
