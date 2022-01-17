@@ -1,9 +1,9 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <cstdlib>
+//#include <iostream>
+//#include <vector>
+//#include <utility>
+//#include <cstdlib>
 
-using namespace std;
+//using namespace std;
 
 
 //int main(){
@@ -44,24 +44,32 @@ using namespace std;
 //    int temp = atoi(c);
 //    fgets(temp,80, stdin)
 //}
+#include <iostream>
+#include <string>
+using namespace std;
 
-typedef struct Node{
-    char *item;                // сюда можно пихать сразу строку
-    Node *next;
-}Node;
+class Parent {
+public:
+    Parent() { Foo(); }
+    virtual ~Parent() = default;
+    virtual void Foo() { cout << "Parent" << endl; }
+    int i = 0;
+};
 
- int main(){
-//    int arr[6];
-//    test(arr, "010011");
-//     for (int i = 0; i < 6; ++i) {
-//         cout << arr [i] << endl;
-//     }
-    Node *p = new Node;         // итерация указателем по массиву чар
-    p -> item = "abrakadabra";  // передача массива чар в указатель *item
-                                // устаревший вариант
-    printf("%s",p->item);       // считывание строки из указателя
+class Child : public Parent {
+public:
+    Child() : j(1) { Foo(); }
+    void Foo() override { cout << "Child" << endl; }
+    int j;
+};
 
+class Grandchild : public Child {
+public:
+    Grandchild() { Foo(); s = "hello"; }
+    void Foo() override { cout << "Grandchild" << endl; }
+    string s;
+};
 
-
-    return 0;
- }
+int main() {
+    Grandchild g;
+}
