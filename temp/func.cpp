@@ -44,32 +44,26 @@
 //    int temp = atoi(c);
 //    fgets(temp,80, stdin)
 //}
+
 #include <iostream>
-#include <string>
-using namespace std;
 
-class Parent {
+class Test {
+    static int m_number;
 public:
-    Parent() { Foo(); }
-    virtual ~Parent() = default;
-    virtual void Foo() { cout << "Parent" << endl; }
-    int i = 0;
+    Test(int x) {
+        m_number = x;
+    }
+    int get() { return m_number; }
+    void set(int y) { m_number = y; }
+    ~ Test() {}
 };
 
-class Child : public Parent {
-public:
-    Child() : j(1) { Foo(); }
-    void Foo() override { cout << "Child" << endl; }
-    int j;
-};
-
-class Grandchild : public Child {
-public:
-    Grandchild() { Foo(); s = "hello"; }
-    void Foo() override { cout << "Grandchild" << endl; }
-    string s;
-};
+int Test::m_number = 0;  //
 
 int main() {
-    Grandchild g;
+
+    Test t(1);
+    Test t2(2);
+    t2.set(3);
+    std::cout << t.get() << ", " << t2.get();
 }
