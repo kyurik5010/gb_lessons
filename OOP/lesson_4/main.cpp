@@ -113,14 +113,14 @@ int main() {
     std::cout << "\nnumber of unique integers in the vector - " << set.getSize();
 //---------------------------------------------------------------------------------------
 // Задание 3
-    card c1(0,0);
-    card c2(1,1);
-    card c3(3,2);
-    hand hnd1;
-    hnd1.Add(&c1);
-    hnd1.Add(&c2);
-    hnd1.Add(&c3);
-    std::cout<<"\n\nyour current score is "<<hnd1.GetValue();
+//    card c1(0,0);
+//    card c2(1,1);
+//    card c3(3,2);
+//    hand hnd1;
+//    hnd1.Add(&c1);
+//    hnd1.Add(&c2);
+//    hnd1.Add(&c3);
+//    std::cout<<"\n\nyour current score is "<<hnd1.GetValue();
 
     return 0;
 }

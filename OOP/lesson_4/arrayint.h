@@ -222,9 +222,9 @@ class MySet{
         Node* left;
         Node* right;
     }tree_node;
-    tree_node* tree = nullptr;
+    tree_node* tree;
 public:
-    MySet() = default;
+    MySet() { tree = nullptr; }
 
     int getSize() { return m_size; }
 
@@ -265,21 +265,35 @@ public:
         return tn;
     }
     void push(int key){
-        tree = Tinsert(tree, key);
+        if(!tree)
+            tree = Tinsert(tree, key);
+        else
+            Tinsert(tree,key);
     }
 
-    tree_node* erase(){
-        if(tree)
+    tree_node* erase(tree_node *t){
+        tree_node* itr = t;
+        while(itr)
         {
-            delete tree->right;
-            delete tree->left;
+            if(itr->right)
+            {
+                itr->right = erase( itr->right);
+            }
+            else if(itr->left)
+            {
+                itr->left = erase(itr->left);
+            }
+            else {
+                itr->key = 0;
+                delete itr;
+                return nullptr;
+            }
         }
-        return tree;
+        return nullptr;
     }
 
     ~MySet(){
-        erase();
-        delete tree;
+        erase(tree);
     }
 };
 
