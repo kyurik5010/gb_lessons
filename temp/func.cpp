@@ -46,24 +46,51 @@
 //}
 
 #include <iostream>
+#include <string>
+#include <stdexcept>
 
-class Test {
-    static int m_number;
-public:
-    Test(int x) {
-        m_number = x;
+enum Type { A = 0, B, C };
+
+std::ostream& operator << (std::ostream& out, const Type& t)
+{
+    switch(t) {
+        case A: return (out << "A");
+        case B: return (out << "B");
+        case C: return (out << "C");
     }
-    int get() { return m_number; }
-    void set(int y) { m_number = y; }
-    ~ Test() {}
-};
+    return (out);
+}
 
-int Test::m_number = 0;  //
+std::istream& operator >> (std::istream& input, Type& t)
+{
+    std::string s;
+    input >> s;
+    if (s == "A") {
+        // неявная конвертация в Type
+        t = A;
+    } else
+    if (s == "B") {
+        t = B;
+    } else
+    if (s == "C") {
+        t = C;
+    } else {
+        // здесь можно выкинуть исключение
+        throw std::runtime_error("incorrect input");
+    }
+    return (input);
+}
 
-int main() {
-
-    Test t(1);
-    Test t2(2);
-    t2.set(3);
-    std::cout << t.get() << ", " << t2.get();
+int main(int argc, char *argv[])
+{
+    using namespace std;
+    Type type;
+    try {
+        cin >> type;
+    } catch(std::exception& e) {
+        cout << e.what();
+        return 1;
+    }
+    cout << type << "=" << static_cast<int>(type);
+    return 0;
 }
