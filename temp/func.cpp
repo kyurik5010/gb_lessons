@@ -46,51 +46,41 @@
 //}
 
 #include <iostream>
-#include <string>
-#include <stdexcept>
+#include <vector>
+#include <memory>
 
-enum Type { A = 0, B, C };
-
-std::ostream& operator << (std::ostream& out, const Type& t)
-{
-    switch(t) {
-        case A: return (out << "A");
-        case B: return (out << "B");
-        case C: return (out << "C");
+class test{
+    std::string m_name;
+    static int x;
+public:
+    test(std::string name="test") {
+        x += 1;
+        m_name += x;
+        std::cout << m_name << "создан \n";
     }
-    return (out);
-}
+    ~test() { std::cout << m_name << "удален \n"; }
+};
 
-std::istream& operator >> (std::istream& input, Type& t)
-{
-    std::string s;
-    input >> s;
-    if (s == "A") {
-        // неявная конвертация в Type
-        t = A;
-    } else
-    if (s == "B") {
-        t = B;
-    } else
-    if (s == "C") {
-        t = C;
-    } else {
-        // здесь можно выкинуть исключение
-        throw std::runtime_error("incorrect input");
-    }
-    return (input);
-}
+int test::x = 0;
 
 int main(int argc, char *argv[])
 {
-    using namespace std;
-    Type type;
-    try {
-        cin >> type;
-    } catch(std::exception& e) {
-        cout << e.what();
-        return 1;
+
+    //создать вектор указателей на объекты вышеприведенного класса
+    //инициализировать его
+    //очистить вектор стандртной clear()
+    //проверить удалились ли указатели
+    {
+        using namespace std;
+
+        test Test;
+        vector<unique_ptr<test>> v;
+        for (int i = 0; i < 5; ++i) {
+            v.push_back(make_unique<test>Test)
+        }
+
+        std::cout << ;
     }
-    cout << type << "=" << static_cast<int>(type);
+
     return 0;
 }
