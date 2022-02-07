@@ -1,25 +1,23 @@
-//#pragma once
+#pragma once
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <random> // для shuffle
-#include <fstream>
+//#include <fstream>
+
 
 
 #ifndef OOP_LSN5_BLACKJACK_H
 #define OOP_LSN5_BLACKJACK_H
-
-std::string filename = "log_file.txt";
-std::ofstream outf(filename);
+//std::string filename = "log_file.txt"; // для дебага
+//std::ofstream outf(filename);
 
 
 #pragma pack (push, 1)
 class Card{
     enum m_suit {diamonds, hearts, spades, cross};
     enum m_value{
-        //ace = 0,
-        ace = 1,              //________________________________________/изменения: туз приравнял единице, убрал единицу -------- @
-        //one,
+        ace = 1,
         two,
         three,
         four,
@@ -29,13 +27,10 @@ class Card{
         eight,
         nine,
         ten,
-///        Jack = 10,             ///_____________________________________________________________________________/убрал 16:50 -- @
-//        Queen = 10,
-//        King = 10,
-        };
+    };
     m_suit st;
     m_value vl;
-    bool isFacedUp = true;     //переделал на true чтобы у дилера пряталась именно первая карта, как указано в 4 задании -------- @
+    bool isFacedUp = true;
 public:
     Card (int suit, int value) {
         st = static_cast<m_suit> (suit);
@@ -59,8 +54,7 @@ public:
             }
             out << "|";
             switch (card.vl){
-                //case 0: out << "ace"; break;  //________________________________________________________________/убрал --------- @
-                case 1: out << "ace"; break;    //_________________________________________________________/переименовал --------- @
+                case 1: out << "ace"; break;
                 case 2: out << "two"; break;
                 case 3: out << "three"; break;
                 case 4: out << "four"; break;
@@ -70,9 +64,6 @@ public:
                 case 8: out << "eight"; break;
                 case 9: out << "nine"; break;
                 case 10: out << "ten"; break;
-//                case 11: out << "Jack"; break;  //___________________________________________/добавил: валет дама король --------- @
-//                case 12: out << "Queen"; break;
-//                case 13: out << "King"; break;
             }
             out << ")";
         }
@@ -86,51 +77,38 @@ class Hand{
 public:
     Hand(){ m_hand.reserve(5); }
     ~Hand() { Clear(); }
-
-    void Add(std::shared_ptr<Card> &c){
-        m_hand.push_back(c);
-    }
-
-    void Clear()
-    {
-//        for(auto i : m_hand)     //______________________________________/убрал, т.к. переделал все на умные указатели  -------- !
-//            i.release();
-        m_hand.clear();
-    }
+    void Add(std::shared_ptr<Card> &c){ m_hand.push_back(c); }
+    void Clear(){ m_hand.clear(); }  //подумал что этого хватит с учетом того, что программа переведена на умные указатели
     std::vector<std::shared_ptr<Card>> getHand() { return m_hand; }
+
     int GetValue() const
     {
         int score = 0;
         int ace = 0;
-        int* aces = new int [m_hand.size()];        //_____________________________/массив для тузов сделал динмаическим -------- !
-        for (int i = 0; i < m_hand.size(); ++i) {
-            if(m_hand[i]->getValue() == 1)          // тузы откладываются и подсчитываются отдельно
+        int* aces = new int [m_hand.size()];
+        for (int i = 0; i < m_hand.size(); ++i)
+        {
+            if(m_hand[i]->getValue() == 1)
                 aces[ace++] = i;
-//            else if(m_hand[i]->getValue() >= 11)    //______________________________________________/валет, дама, король -------- !
-//                score += 10; // надеюсь тузы нерфить не будет
             score += m_hand[i]->getValue();
         }
 
-        for (int i = 0; i < ace; ++i)               //_____________________________________________________/посчет тузов -------- !
+        for (int i = 0; i < ace; ++i)
         {
-            if(score + 11 <= 21) {
+            if(score + 11 <= 21)
+            {
                 m_hand[aces[i]]->setAce(11);
                 score += 11;
             }
-//            else                                  //____________________________________________________________/убрал  -------- !
-//            {
-//                hnd[aces[i]]->setAce(1);
-//                score += 1;
-//            }
         }
-        delete[] aces;                              //__________________________________________________________/добавил  -------- !
+        delete[] aces;
         return score;
     }
 };
 
 class GenericPlayer : public Hand{
     std::string m_name;
-    int m_player_score;
+    int m_player_score = 0;
     uint8_t IsBusted = 0;
 public:
     void setName(std::string &name) { m_name = name; }
@@ -150,7 +128,8 @@ public:
         else
             return false;
     }
-    friend bool operator==(GenericPlayer& gp1, GenericPlayer& gp2){
+    friend bool operator==(GenericPlayer& gp1, GenericPlayer& gp2) // для удобства при логических условиях в подсчете очков
+    {
         return (gp1.GetName() == gp2.GetName());
     }
     friend std::ostream& operator<< (std::ostream &out, GenericPlayer& gp)
@@ -168,7 +147,7 @@ public:
 
 class Player : public GenericPlayer{
 public:
-    Player(std::string name){
+    Player(std::string name){ //Single-argument constructors must be marked explicit to avoid unintentional implicit conversions
         setName(name);
     }
     bool IsHitting() const override{  //________________________________________/function should be marked [[nodiscard]] --------- ?
@@ -179,9 +158,9 @@ public:
             return true;
         return false;
     }
-    void Win() const{ std::cout << "\n\n" << GetName() << " has won the game!\n\n"; }
+    void Win() const{ std::cout << "\n\n" << GetName() << " has won the game!\n"; }
     void Lose() const{ std::cout << "\n" << GetName() << " lost"; }
-    void Push() const{ std::cout << "\n" << GetName() << " played a draw!"; }
+    // void Push() const{ std::cout << "\n" << GetName() << " played a draw!"; } // решил не использовать
 
 };
 
@@ -198,6 +177,7 @@ public:
             return true;
         return false;
     }
+    void Lose() const{ std::cout << "\nThe Cassino lost"; }
     void FlipFirstCard(){
         if(!getHand().empty())
             getHand()[0]->flip();
@@ -231,17 +211,17 @@ public:
     Deck& Shuffle()
     {
         std::random_device rd;
-        std::mt19937 generator(rd());
+        std::mt19937 generator(rd()); //random_shuffle was deprecated in C++14 and completely removed in C++17.  ~
         shuffle( m_deck.begin(), m_deck.end(), generator);
-        outf << "Сгенерированная и отсортированная колода: \n";
-        for (int i = 0; i < m_deck.size(); ++i)
-        {
-            if(!(i % 13))
-                outf << "\n";
-            outf << *m_deck[i] << " ";
-        }
+//      outf << "Сгенерированная и отсортированная колода: \n";                  // это все для дебага
+//        for (int i = 0; i < m_deck.size(); ++i)
+//        {
+//            if(!(i % 13))
+//                outf << "\n";
+//            outf << *m_deck[i] << " ";
+//        }
         return *this;
-    }                                          //random_shuffle was deprecated in C++14 and completely removed in C++17.  ~
+    }
 
     void Deal (Hand& hand)
     {
@@ -278,12 +258,16 @@ public:
         m_deck.Shuffle();
     }
 
-    void PrintTable(){ //
-        std::cout << "\n\n\n____________________________________\n"
-                  << m_house << ":      \n\n\n";
+    void PrintTable(bool final = false){ //
+        std::cout << "\n\n\n\n\n____________________________________\n"
+                  << m_house;
+        if(!final)
+            std::cout<< "\n\n";
+        else
+            std::cout<< " score: " << m_house.GetScore() << "\n\n";
         for (int i = 0; i < players.size(); ++i)
             std::cout << *players[i] << "\n";
-        std::cout << "____________________________________\n\n\n";
+        std::cout << "____________________________________";
     }
 
     void Play(){
@@ -311,20 +295,18 @@ public:
         m_house.FlipFirstCard();
         m_deck.AddltionalCards(m_house);
 
-        std::cout << "\n\nHouse score:" << m_house.GetScore(); // дописать условие когда никто не выиграл
-        PrintTable();
+        PrintTable(true);
 
         // подсчет очков
-        std::vector<std::shared_ptr<Player>>winners; // механика для игроков с одинаковым счетом
+        std::vector<std::shared_ptr<Player>>winners; // для игроков с одинаковым счетом
         uint8_t IsCassWin = 0;
-
 
         for (int i = 0, j = 0, high_score=0; i < players.size(); ++i)
         {
-            if(players[i]->GetScore() > high_score)
+            if(players[i]->GetScore() > high_score && !players[i]->IsBoosted())
             {
                 high_score = players[i]->GetScore();
-                if(winners.size() > 0) {
+                if(!winners.empty()) {
                     winners.clear();
                     winners.push_back(players[i]);
                     continue;
@@ -335,42 +317,66 @@ public:
                 winners.push_back(players[i]);
         }
 
-        if(winners.size() == 1)
-        {
-            if (m_house.GetScore() <= 21 && m_house.GetScore() > winners[0]->GetScore()) {
-                std::cout << "\n\n The cassino wins ! \n\n";
+        if(!m_house.IsBoosted()){
+            if(winners.empty()) {
                 IsCassWin = 1;
-                for (int i = 0; i < players.size(); ++i) {
+                std::cout << "\n\n The cassino wins ! \n\n";
+                for (int i = 0; i < players.size(); ++i)
+                {
                     players[i]->Lose();
                     players[i]->Clear();
                 }
-            } else if (m_house.GetScore() == winners[0]->GetScore()) {
-                std::cout << "\n\n The cassino and " << winners[0]->GetName() << " have a draw!\n\n";
-                for (int i = 0; i < players.size(); ++i) {
-                    if (players[i] != winners[0])
-                        players[i]->Lose();
-                    players[i]->Clear();
-                }
+            }
+            else if((m_house.GetScore() == 21) || (m_house.GetScore() == winners[0]->GetScore()))
+                IsCassWin = 1;
+        }
 
-            } else {
-                for (int i = 0; i < players.size(); ++i) {
-                    if (players[i] == winners[0])
-                        players[i]->Win();
-                    else
+        if(winners.size() == 1)
+        {
+            if(IsCassWin) {
+                if (m_house.GetScore() > winners[0]->GetScore())
+                {
+                    std::cout << "\nThe cassino wins ! \n\n";
+                    for (int i = 0; i < players.size(); ++i)
+                    {
+                        players[i]->Lose();
+                        players[i]->Clear();
+                    }
+                }
+                else if (m_house.GetScore() == winners[0]->GetScore())
+                {
+                    std::cout << "\n\n The cassino and " << winners[0]->GetName() << " have a draw!\n\n";
+                    for (int i = 0; i < players.size(); ++i)
+                    {
+                        if (players[i] != winners[0])
+                            players[i]->Lose();
+                        players[i]->Clear();
+                    }
+
+                }
+            }
+            else
+            {
+                winners[0]->Win();
+                m_house.Lose();
+                for (int i = 0; i < players.size(); ++i)
+                {
+                    if (players[i] != winners[0])
                         players[i]->Lose();
                     players[i]->Clear();
                 }
             }
         }
-        else if(winners.size() > 1)
+        else if(winners.size() > 1) // для игроков с одинаковым счетом
         {
-            if(!IsCassWin)
+            if(IsCassWin)
             {
-                std::cout << "\n Players " << winners[0]->GetName();
-                for (int i = 1; i < winners.size(); ++i) {
+                std::cout << "\nThe Cassino ";
+                for (int i = 0; i < winners.size(); ++i)
+                {
                     std::cout << " and " << winners[i];
                 }
-                std::cout << " win and have a draw!\n\n";
+                std::cout << " win and have a draw!";
                 for (int i = 0, bad = 0; i < players.size(); ++i)
                 {
                     for (int j = 0; j < winners.size(); ++j)
@@ -389,10 +395,10 @@ public:
                     players[i]->Clear();
                 }
             }
-            else if(IsCassWin)
+            else
             {
-                std::cout << "\n The House ";
-                for (int i = 0; i < winners.size(); ++i) {
+                std::cout << "\n Players " << winners[0]->GetName();
+                for (int i = 1; i < winners.size(); ++i) {
                     std::cout << " and " << winners[i];
                 }
                 std::cout << " win and have a draw!\n\n";
@@ -418,7 +424,6 @@ public:
         m_house.Clear();
         std::cout<<std::flush;
     }
-
 };
 
 #endif //OOP_LSN5_BLACKJACK_H
