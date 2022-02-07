@@ -150,13 +150,16 @@ public:
         else
             return false;
     }
-    //void Bust() { std::cout << " BUSTED"; }
-    friend std::ostream& operator<< (std::ostream &out, GenericPlayer& gp){
+    friend bool operator==(GenericPlayer& gp1, GenericPlayer& gp2){
+        return (gp1.GetName() == gp2.GetName());
+    }
+    friend std::ostream& operator<< (std::ostream &out, GenericPlayer& gp)
+    {
         out << gp.m_name;
         for (int i = 0; i < gp.getHand().size(); ++i)
             out << " " << *gp.getHand()[i];
-
-        out << " score: " << gp.GetScore();
+        if(gp.m_name != "House")
+            out << " score: " << gp.GetScore();
         if(gp.IsBoosted())
             out << "  BUSTED";
         return out;
@@ -189,7 +192,8 @@ public:
         std::string name = "House";
         setName(name);
     }
-    bool IsHitting() const override {
+    bool IsHitting() const override
+    {
         if (GetScore() <= 16)
             return true;
         return false;
@@ -202,27 +206,20 @@ public:
 
 //____________________________________________________________________________________________________________/ЗАДАНИЕ 3
 
-/**
-3. Создать класс Deck, который наследует от класса Hand и представляет собой колоду карт. Класс Deck имеет 4 метода:
-• vold Populate() - Создает стандартную колоду из 52 карт, вызывается из конструктора.
-• void Shuffle() - Метод, который тасует карты, можно использовать функцию из алгоритмов STL random_shuffle
-• vold Deal (Hand& aHand) - метод, который раздает в руку одну карту
-• void AddltionalCards (GenericPlayer& aGenerlcPlayer) - раздает игроку дополнительные карты до тех пор, пока
- он может и хочет их получать
-
-Обратите внимание на применение полиморфизма. В каких методах применяется этот принцип ООП?
- */
-
 class Deck : public Hand{
     std::vector<std::shared_ptr<Card>> m_deck;
 public:
     ~Deck() { m_deck.clear(); }
-    Deck& Populate(){
+    Deck& Populate()
+    {
         m_deck.reserve(52);
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 1; j <= 13; ++j) {
-                if(j >= 10) {
-                    m_deck.push_back(std::make_shared <Card> ( i,10 )); ///____________/10, Jack, Queen, King -------- !
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 1; j <= 13; ++j)
+            {
+                if(j >= 10)
+                {
+                    m_deck.push_back(std::make_shared <Card> ( i,10 ));
                     continue;
                 }
                 m_deck.push_back( std::make_shared <Card> (i,j) );
@@ -231,12 +228,14 @@ public:
         return *this;
     }
 
-    Deck& Shuffle() {
+    Deck& Shuffle()
+    {
         std::random_device rd;
         std::mt19937 generator(rd());
         shuffle( m_deck.begin(), m_deck.end(), generator);
         outf << "Сгенерированная и отсортированная колода: \n";
-        for (int i = 0; i < m_deck.size(); ++i) {
+        for (int i = 0; i < m_deck.size(); ++i)
+        {
             if(!(i % 13))
                 outf << "\n";
             outf << *m_deck[i] << " ";
@@ -244,12 +243,14 @@ public:
         return *this;
     }                                          //random_shuffle was deprecated in C++14 and completely removed in C++17.  ~
 
-    void Deal (Hand& hand) {
-        hand.Add(m_deck.back()); //__________________________________________________________________/[m_deck.size()] --------- !
+    void Deal (Hand& hand)
+    {
+        hand.Add(m_deck.back());
         m_deck.pop_back();
     }
 
-    void AddltionalCards (GenericPlayer& gp) {
+    void AddltionalCards (GenericPlayer& gp)
+    {
         while(!gp.IsBoosted() && gp.IsHitting())
         {
             Deal(gp);
@@ -262,36 +263,35 @@ public:
 
 //____________________________________________________________________________________________________________/ЗАДАНИЕ 4
 
-/**
-4. Реализовать класс Game, который представляет собой основной процесс игры. У этого класса будет 3 поля:
-• колода карт
-• рука дилера
-• вектор игроков.
-    Конструктор класса принимает в качестве параметра вектор имен игроков и создает объекты самих игроков.
-В конструкторе создается колода карт и затем перемешивается.
-    Также класс имеет один метод play(). В этом методе раздаются каждому игроку по две стартовые карты,
-а первая карта дилера прячется. Далее выводится на экран информация о картах каждого игрока, в т.ч. и для дилера.
-    Затем раздаются игрокам дополнительные карты. Потом показывается первая карта дилера и дилер набирает карты,
-если ему надо. После этого выводится сообщение, кто победил, а кто проиграл. В конце руки всех игроков очищаются.
- */
-
 class Game{
     std::vector<std::shared_ptr<Player>>players;
     Deck m_deck;
     House m_house;
 public:
-    Game(std::vector<std::string>&names){
-        for (int i = 0; i < names.size(); ++i) {
+    Game(std::vector<std::string>&names)
+    {
+        for (int i = 0; i < names.size(); ++i)
+        {
             players.push_back(std::make_shared<Player>(names[i]));
-            m_deck.Populate().Shuffle();                //___________________/ это нормально или считается плохим тоном? --------- ?
         }
+        m_deck.Populate();
+        m_deck.Shuffle();
     }
+
+    void PrintTable(){ //
+        std::cout << "\n\n\n____________________________________\n"
+                  << m_house << ":      \n\n\n";
+        for (int i = 0; i < players.size(); ++i)
+            std::cout << *players[i] << "\n";
+        std::cout << "____________________________________\n\n\n";
+    }
+
     void Play(){
         for (int i = 0; i < 2; ++i) {
             for (int j = 0; j < players.size(); ++j) {
-                m_deck.Deal(*players[j]);//______________________________/здесь может возникнуть проблема --------- !
+                m_deck.Deal(*players[j]);
             }
-            m_deck.Deal(m_house);                    ///__________________________________/переместил во внешний цикл 16:19---- @
+            m_deck.Deal(m_house);
         }
         m_house.FlipFirstCard();
 
@@ -300,76 +300,119 @@ public:
             players[i] -> UpdateScore();
         }
 
-        //отрисовка поля
-        std::cout << "House:   " << m_house << "\n\n\n";
-        for (int i = 0; i < players.size(); ++i)
-            std::cout << *players[i] << "\n";
+        PrintTable();
 
         //добор карт
         for (int i = 0; i < players.size(); ++i)
         {
             m_deck.AddltionalCards(*players[i]);
-
-            //отрисовка поля
-            std::cout << "\n\n\n" << "House:   " << m_house << "\n\n\n";
-            for (int j = 0; j < players.size(); ++j)
-                std::cout << *players[j] << "\n";
+            PrintTable();
         }
         m_house.FlipFirstCard();
         m_deck.AddltionalCards(m_house);
 
-        //отрисовка поля
-        std::cout << "\n\n\n" << "House:   " << m_house << "\n\n\n";
-        for (int i = 0; i < players.size(); ++i)
-            std::cout << *players[i] << "\n";
+        std::cout << "\n\nHouse score:" << m_house.GetScore(); // дописать условие когда никто не выиграл
+        PrintTable();
 
         // подсчет очков
+        std::vector<std::shared_ptr<Player>>winners; // механика для игроков с одинаковым счетом
+        uint8_t IsCassWin = 0;
 
-        int winner = -1;      // сделать массивом индексов, если длина больше 1 запустить протокол ничьей для игроков
-        uint8_t cassWin = 0;
 
-
-        for (int i = 0, high_score=0; i < players.size(); ++i)
+        for (int i = 0, j = 0, high_score=0; i < players.size(); ++i)
         {
             if(players[i]->GetScore() > high_score)
             {
                 high_score = players[i]->GetScore();
-                winner = i; // будет массивом
+                if(winners.size() > 0) {
+                    winners.clear();
+                    winners.push_back(players[i]);
+                    continue;
+                }
+                winners.push_back(players[i]);
             }
-            // механика для игроков с одинаковым счетом
+            else if(players[i]->GetScore() == high_score)
+                winners.push_back(players[i]);
         }
 
-        if(m_house.GetScore() <= 21 && m_house.GetScore() > players[winner]->GetScore())
+        if(winners.size() == 1)
         {
-            std::cout << "\n\n The cassino wins ! \n\n";
-            cassWin = 1;
-            for (int i = 0; i < players.size(); ++i)
-            {
-                players[i]->Lose();
-                players[i]->Clear();
-            }
-        }
-
-        else if(m_house.GetScore() == players[winner]->GetScore())
-        {
-            std::cout << "\n\n The cassino and " << players[winner]->GetName() << " have a draw!\n\n";
-            for (int i = 0; i < players.size(); ++i)
-            {
-                if(i != winner)
+            if (m_house.GetScore() <= 21 && m_house.GetScore() > winners[0]->GetScore()) {
+                std::cout << "\n\n The cassino wins ! \n\n";
+                IsCassWin = 1;
+                for (int i = 0; i < players.size(); ++i) {
                     players[i]->Lose();
-                players[i]->Clear();
+                    players[i]->Clear();
+                }
+            } else if (m_house.GetScore() == winners[0]->GetScore()) {
+                std::cout << "\n\n The cassino and " << winners[0]->GetName() << " have a draw!\n\n";
+                for (int i = 0; i < players.size(); ++i) {
+                    if (players[i] != winners[0])
+                        players[i]->Lose();
+                    players[i]->Clear();
+                }
+
+            } else {
+                for (int i = 0; i < players.size(); ++i) {
+                    if (players[i] == winners[0])
+                        players[i]->Win();
+                    else
+                        players[i]->Lose();
+                    players[i]->Clear();
+                }
             }
-
         }
-
-        else
+        else if(winners.size() > 1)
         {
-            for (int i = 0; i < players.size(); ++i) {
-                if (i == winner)
-                    players[i]->Win();
-                else
-                    players[i]->Lose();
-                players[i]->Clear();
+            if(!IsCassWin)
+            {
+                std::cout << "\n Players " << winners[0]->GetName();
+                for (int i = 1; i < winners.size(); ++i) {
+                    std::cout << " and " << winners[i];
+                }
+                std::cout << " win and have a draw!\n\n";
+                for (int i = 0, bad = 0; i < players.size(); ++i)
+                {
+                    for (int j = 0; j < winners.size(); ++j)
+                    {
+                        if(players[i] == winners[j])
+                        {
+                            bad = 1;
+                        }
+                    }
+                    if(bad)
+                        continue;
+                    else
+                        players[i]->Lose();
+                }
+                for (int i = 0; i < players.size(); ++i) {
+                    players[i]->Clear();
+                }
+            }
+            else if(IsCassWin)
+            {
+                std::cout << "\n The House ";
+                for (int i = 0; i < winners.size(); ++i) {
+                    std::cout << " and " << winners[i];
+                }
+                std::cout << " win and have a draw!\n\n";
+                for (int i = 0, bad = 0; i < players.size(); ++i)
+                {
+                    for (int j = 0; j < winners.size(); ++j)
+                    {
+                        if(players[i] == winners[j])
+                        {
+                            bad = 1;
+                        }
+                    }
+                    if(bad)
+                        continue;
+                    else
+                        players[i]->Lose();
+                }
+                for (int i = 0; i < players.size(); ++i) {
+                    players[i]->Clear();
+                }
             }
         }
         m_house.Clear();
