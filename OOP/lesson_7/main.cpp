@@ -69,11 +69,18 @@ void task2(){
              << "date2 was changed to " << *date2 << "\n";
 }
 
-//____________________________________________________________________________________________________________/ЗАДАНИЕ 5
 
- int main() {
-//    task1();
-//    task2();
+
+int main() {
+     
+    task1();
+     
+    task2();
+
+//____________________________________________________________________________________________________________/ЗАДАНИЕ 5
+// Вариант блекджека разделенного на модули приложен в директории "модульный блекджек"
+     
+     
     char choice;
     std::string name;
     std::vector<std::string>players;
@@ -102,16 +109,5 @@ void task2(){
         else
             break;
     }
-//    std::shared_ptr<Player> p1 = std::make_shared<Player>("Yuri");
-//    std::vector<std::shared_ptr<Player>> vec;
-//    vec.push_back(p1);
-//    std::shared_ptr<Card> c1 = std::make_shared<Card>(0,1);
-//    std::shared_ptr<Card> c2 = std::make_shared<Card>(0,2);
-//    std::shared_ptr<Card> c3 = std::make_shared<Card>(1,1);
-//    vec[0]->Add(c1);
-//    vec[0]->Add(c2);
-//    vec[0]->Add(c3);
-//    std::cout << *vec[0];
-
     return 0;
 }
