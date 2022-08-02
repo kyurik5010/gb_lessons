@@ -1,0 +1,6 @@
+conan install /Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7 -if=/Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7/cmake-build-debug -pr=default
+ERROR: Conanfile not found at /Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7/conanfile.py or /Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7/conanfile.txt
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja /Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/urijmihajlovic/CLionProjects/tough_cpp_lsn7/cmake-build-debug
