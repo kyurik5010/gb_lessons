@@ -1,0 +1,13 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_2
+CMake Error at pcappp_sniffer/CMakeLists.txt:11 (include):
+  include requested file is a directory:
+
+    /usr/local/Cellar/pcapplusplus/22.05/include/pcapplusplus/
+
+
+
+Takoe build done
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_2/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_2/cmake-build-debug/CMakeFiles/CMakeError.log".

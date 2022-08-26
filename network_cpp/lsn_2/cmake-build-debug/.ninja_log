@@ -1,0 +1,6 @@
+# ninja log v5
+15	449	1661179218050947737	build.ninja	7847e63db63cd49
+0	515	1660241267778728769	l2/linux_call_intercepter/CMakeFiles/call-intercepter.dir/call_intercepter.cpp.o	3c7fde6a9cb44b35
+1	1350	1660590428748671762	l2/pcap_sniffer/CMakeFiles/pcap-sniffer.dir/main.cpp.o	c0e2919a06c02192
+1	1353	1660590428748735321	l2/pcap_sniffer/CMakeFiles/pcap-sniffer.dir/packet_printer.cpp.o	80b996f30510a748
+1353	1597	1660590429002490967	bin/pcap-sniffer	5b08fe6f65333b6

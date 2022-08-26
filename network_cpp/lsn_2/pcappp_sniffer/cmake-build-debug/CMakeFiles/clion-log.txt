@@ -1,0 +1,15 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_2/pcappp_sniffer
+
+
+LIB: /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/CoreFoundation.framework
+
+
+
+LIB: /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/SystemConfiguration.framework
+
+
+PcapPlusPlus build complete 
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_2/pcappp_sniffer/cmake-build-debug
