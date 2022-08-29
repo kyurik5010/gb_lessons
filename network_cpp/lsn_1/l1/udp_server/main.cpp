@@ -13,10 +13,6 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
-//#include <socket_wrapper/socket_headers.h> // при сборке библиотеки почему-то вылетают ошибки преобразования типов
-//#include <socket_wrapper/socket_wrapper.h> 
-//#include <socket_wrapper/socket_class.h>
-
 
 // Trim from end (in place).
 static inline std::string& rtrim(std::string& s)
@@ -25,7 +21,11 @@ static inline std::string& rtrim(std::string& s)
     return s;
 }
 
-
+class TCP_dump{
+    TCP_dump* dumper;
+public:
+    TCP_dump()
+};
 int main(int argc, char const *argv[])
 {
 
@@ -35,10 +35,8 @@ int main(int argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    //socket_wrapper::SocketWrapper sock_wrap;
     const int port { std::stoi(argv[1]) };
 
-    //socket_wrapper::Socket sock = {AF_INET, SOCK_DGRAM, IPPROTO_UDP};
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
     std::cout << "Starting echo server on the port " << port << "...\n";
