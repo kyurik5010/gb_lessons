@@ -21,11 +21,7 @@ static inline std::string& rtrim(std::string& s)
     return s;
 }
 
-class TCP_dump{
-    TCP_dump* dumper;
-public:
-    TCP_dump()
-};
+
 int main(int argc, char const *argv[])
 {
 
