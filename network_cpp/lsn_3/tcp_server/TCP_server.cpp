@@ -55,7 +55,11 @@ public:
         serv_addr.sin_port = htons(port);
         serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
         
-        BindSocket(CreateSocket_IPv4(), serv_addr);
+        if(BindSocket(CreateSocket_IPv4(), serv_addr))
+        {
+            std::cout << "Session closed due to an error" std::endl;
+
+        }
 
         listen(sock, 0);
         
@@ -88,7 +92,7 @@ public:
     
     int BindSocket(int socket, const sockaddr_in& addr)
     {
-         if (bind(socket, reinterpret_cast<const sockaddr*>(&addr), sizeof(addr)) != 0)
+         if (bind(socket, reinterpret_cast<const sockaddr *>(&addr), sizeof(addr)) != 0)
          {
              std::cerr << "\nBIND_ERROR" << std::endl;
              close(socket);

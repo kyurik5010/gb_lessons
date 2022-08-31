@@ -5,24 +5,15 @@
 #include <iostream>
 
 int main(int argc, char const *argv[]){
-    if(argc < 1)
-    {
-        std::cerr << argv[0] << "Usage: <port>" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    std::cout << argv[0] << std::endl;
+    std::cout << "Please provide port number: ";
+    std::string argument;
+    std::cin >> argument;
 
     TCP_server *serv = TCP_server::getServerInstatnce();
 
-    const int port = std::atoi(argv[0]);
+    const int port = std::stoi(argument);
 
-    if(serv->StartServerOnPort(port) != 0)
-    {
-        std::cerr << "Closing\n";
-        return EXIT_FAILURE;
-    }
-
+    serv->StartServerOnPort(port);
 
     return EXIT_SUCCESS;
 }
