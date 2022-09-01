@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <netdb.h>
 #include "unistd.h"
+#include <arpa/inet.h>
 
 
 class TCP_client
@@ -23,14 +24,14 @@ private:
     
     
 public:
-    TCP_client(char* ip, char* p)
+    TCP_client(std::string ip, std::string p)
     {
-        IP_address = atoi(ip);
-        port = atoi(p);
-        
+        port = stoi(p);
+
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
-        serv_addr.sin_addr.s_addr = htonl(IP_address);
+        inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr);
+
         serv_addr.sin_len = sizeof(sockaddr_in);
     }
     
@@ -46,7 +47,7 @@ public:
         
         int broadcast = 1;
         
-        if(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) < 0)
+        if(setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) < 0)
         {
             std::cerr << "WARNING - failed setting options for cocket: " << errno << std::endl;
         }

@@ -47,9 +47,9 @@ public:
         m1.lock(); // в разделе про синглтоны советовали так делать для обеспечения их потокобезопасности
         if(!instance)
         {
-            instance = recieve_pointer(); // прикрутить здесь умный указатель не получается из-за приватного конструктора
+            instance = recieve_pointer();
         }
-        m1.unlock();                     // предлагается зафрендить
+        m1.unlock();
         return instance;
     }
     
@@ -61,7 +61,7 @@ public:
         
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
-        serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        serv_addr.sin_addr.s_addr = INADDR_ANY;
 
         sock = CreateSocket_IPv4();
 
@@ -96,7 +96,7 @@ public:
         
         int broadcast = 1;
 
-        if(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) != 0)
+        if(setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) != 0)
             std::cerr << "ERROR setting socket options" << std::endl;
         return sock;
     }
@@ -105,7 +105,7 @@ public:
     {
          if (bind(socket, reinterpret_cast<const sockaddr *>(&addr), sizeof(addr)) != 0)
          {
-             std::cerr << "\nBIND_ERROR" << std::endl;
+             std::cerr << "\nBIND_ERROR " << errno <<  std::endl;
              close(socket);
              return EXIT_FAILURE;
          }
