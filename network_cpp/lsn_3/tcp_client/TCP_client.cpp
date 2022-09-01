@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 #include "sys/socket.h"
 #include <netinet/in.h>
 #include <sys/types.h>
@@ -16,7 +17,7 @@ private:
     int IP_address;
     
     int sock;
-    char* message_buffer[256];
+    char incoming_buffer[1024];
     struct sockaddr_in serv_addr;
     char* serv_name[NI_MAXSERV];
     
@@ -31,7 +32,7 @@ public:
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
         inet_pton(AF_INET, ip.c_str(), &serv_addr.sin_addr);
-
+        std::cout << "Attempt connecting to server at " << ip.c_str() << std::endl;
         serv_addr.sin_len = sizeof(sockaddr_in);
     }
     
@@ -60,7 +61,7 @@ public:
         
         if(connect(sock, reinterpret_cast<sockaddr *>(&serv_addr), sizeof(serv_addr)) < 0)
         {
-            std::cerr << "ERROR '" << errno << "' connecting to server at " << ntohl(serv_addr.sin_addr.s_addr) << std::endl;
+            std::cerr << "ERROR connecting to server #" << errno << std::endl;
             return EXIT_FAILURE;
         }
         
@@ -74,23 +75,36 @@ public:
         int run = 1;
         while(run)
         {
-            std::string buf;
+            std::string str;
             std::cout << "Send message: ";
-            std::cin >> buf;
-            
-            send(sock, buf.c_str(), sizeof(message_buffer)-1, 0);
-            
-            if (recv(sock, message_buffer, sizeof(message_buffer), 0) < 0)
+            std::cin >> str;
+            str += '\0';
+            char outgoing_buffer[256];
+
+            strncpy(outgoing_buffer, str.c_str(), sizeof(outgoing_buffer));
+
+            if(-1 == (send(sock, outgoing_buffer, sizeof(outgoing_buffer)-1, 0)))
             {
-                std::cerr << "ERROR receiving message from client" << std::endl;
+                std::cerr << "ERROR sending message: #" << errno << std::endl;
+                close(sock);
                 return EXIT_FAILURE;
             }
             
-            if(buf == "exit")
+            if (recv(sock, incoming_buffer, sizeof(incoming_buffer), 0) < 0)
             {
-                std::cout << "Terminating";
+                std::cerr << "ERROR receiving message: #" << errno << std::endl;
+                close(sock);
+                return EXIT_FAILURE;
             }
-            
+
+            if((std::string)outgoing_buffer == "exit")
+            {
+                run = 0;
+                CloseSession();
+                break;
+            }
+            else
+                std::cout << incoming_buffer << std::endl;
         }
         return 0;
     }
@@ -99,7 +113,10 @@ public:
     {
         shutdown(sock, SHUT_RDWR);
         close(sock);
+        std::cout << "Session closed" << std::endl;
     }
     
-    ~TCP_client(){};
+    ~TCP_client(){
+        CloseSession();
+    };
 };

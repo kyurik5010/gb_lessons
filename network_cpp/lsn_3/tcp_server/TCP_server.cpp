@@ -61,7 +61,7 @@ public:
         
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
-        serv_addr.sin_addr.s_addr = INADDR_ANY;
+        serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
         sock = CreateSocket_IPv4();
 
@@ -71,33 +71,35 @@ public:
             return EXIT_FAILURE;
         }
 
-        listen(sock, 0);
-        
+        if(-1 == listen(sock, 0))
+        {
+            std::cerr << "ERROR #" << errno << " listening on port " << port << std::endl;
+        }
         std::cout << "Socket listening on port " << port << std::endl;
         
         if(!GetConnection())
             return EXIT_FAILURE;
         
-        if(!CommenceExchange())
-            std::cout << "Session closed" << std::endl;
+        CommenceExchange();
+
         CloseSession();
-        
+
         return 0;
     }
     
     int CreateSocket_IPv4()
     {
         sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (!sock)
+        if (sock == -1)
         {
-            std::cerr << "SOCKET_ERROR" << std::endl;
+            std::cerr << "SOCKET_ERROR #" << errno << std::endl;
             return EXIT_FAILURE;
         }
         
-        int broadcast = 1;
-
-        if(setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) != 0)
-            std::cerr << "ERROR setting socket options" << std::endl;
+//        int reuseport = 1;
+//
+//        if(setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char*>(&reuseport), sizeof(reuseport)) != 0)
+//            std::cerr << "ERROR setting socket options" << std::endl;
         return sock;
     }
     
@@ -105,7 +107,7 @@ public:
     {
          if (bind(socket, reinterpret_cast<const sockaddr *>(&addr), sizeof(addr)) != 0)
          {
-             std::cerr << "\nBIND_ERROR " << errno <<  std::endl;
+             std::cerr << "\nBIND_ERROR #" << errno <<  std::endl;
              close(socket);
              return EXIT_FAILURE;
          }
@@ -117,7 +119,7 @@ public:
         sockfd = accept(sock, reinterpret_cast<sockaddr *>(&client_address), &client_address_len);
         if(sockfd <= 0)
         {
-            std::cerr << "ERROR connecting to client" << std::endl;
+            std::cerr << "ERROR connecting to client #" << errno << std::endl;
             return false;
         }
         PrintClientID();
@@ -126,42 +128,50 @@ public:
     
     int CommenceExchange()
     {
-        
         std::cout << "Starting exchange on port " << port << std::endl;
+        char outgoing_buffer[256];
         int run = 1;
         while (run)
         {
             if (recv(sockfd, buffer, sizeof(buffer) - 1, 0) < 0)
             {
-                std::cerr << "ERROR receiving message from client" << std::endl;
+	        std::cerr << "ERROR receiving message #" << errno << std::endl;
                 return EXIT_FAILURE;
             }
             
-            std::cout << buffer << " ";
+            std::cout << buffer << std::endl;
             
             if((std::string)buffer == "exit")
             {
                 std::string str = "'exit' command recieved";
-                send(sockfd, str.c_str(), sizeof(buffer) - 1, 0);
+                strncpy(outgoing_buffer, str.c_str(), sizeof(outgoing_buffer));
+                send(sockfd, outgoing_buffer, sizeof(outgoing_buffer) - 1, 0);
                 run = 0;
+                close(sockfd);
             }
             else
             {
                 std::string str = "Server has recieved ";
-                str += std::to_string(sizeof(*buffer - 1));
-                str += " bytes from client";
-                send(sockfd, buffer, sizeof(buffer) - 1, 0);
+                str += std::to_string(strlen(buffer));
+                str += " symbols from client\0";
+                strncpy(outgoing_buffer, str.c_str(), sizeof(outgoing_buffer));
+                send(sockfd, outgoing_buffer, sizeof(outgoing_buffer) - 1, 0);
             }
         }
+        std::cout << "Session closed" << std::endl;
         return 0;
     }
     
     void PrintClientID()
     {
+        char* buf[256];
         getnameinfo(reinterpret_cast<sockaddr *>(&client_address), client_address_len,
                     client_name_buf, NI_MAXHOST, serv_name_buf, NI_MAXSERV, 0);
+
+        inet_ntop(AF_INET, &client_address.sin_addr.s_addr, *buf, sizeof(buf));
+
         std::cout << "Connected to client: " << (std::string)client_name_buf
-                  << "\nat address: '"<< ntohl(client_address.sin_addr.s_addr) << "'" << std::endl;
+                  << "\nat address: '"<< *buf << "'" << std::endl;
     }
     
     void CloseSession()
@@ -169,10 +179,16 @@ public:
         shutdown(sock, SHUT_RDWR);
         shutdown(sockfd, SHUT_RDWR);
         close(sock);
+        close(sockfd);
         std::cout << "Session closed" << std::endl;
     }
     
-    ~TCP_server(){};
+    ~TCP_server(){
+        shutdown(sock, SHUT_RDWR);
+        shutdown(sockfd, SHUT_RDWR);
+        close(sock);
+        close(sockfd);
+    };
 };
 
 
