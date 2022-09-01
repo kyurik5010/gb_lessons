@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <mutex>
+#include <memory>
 #include "sys/socket.h"
 #include "netinet/in.h"
 #include "unistd.h"
@@ -13,7 +14,7 @@
 class TCP_server
 {
 
-    static TCP_server* instance;
+    static std::shared_ptr<TCP_server> instance;
     int port;
     int sock, sockfd;
     char buffer[256];
@@ -29,19 +30,26 @@ class TCP_server
 private:
     
     TCP_server(){
-//        client_address = {0};
-//        serv_addr = {0};
+        client_address = {0};
+        serv_addr = {0};
     };
-    
+
+    static std::shared_ptr<TCP_server> recieve_pointer()
+    {
+        return std::make_shared<TCP_server>(TCP_server());
+    }
+
 public:
-    
-    static TCP_server* getServerInstatnce()
+
+    static std::shared_ptr<TCP_server> getServerInstatnce()
     {
         std::mutex m1;
-        m1.lock();
+        m1.lock(); // в разделе про синглтоны советовали так делать для обеспечения их потокобезопасности
         if(!instance)
-            instance = new TCP_server;
-        m1.unlock();
+        {
+            instance = recieve_pointer(); // прикрутить здесь умный указатель не получается из-за приватного конструктора
+        }
+        m1.unlock();                     // предлагается зафрендить
         return instance;
     }
     
@@ -54,11 +62,13 @@ public:
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
         serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-        
-        if(BindSocket(CreateSocket_IPv4(), serv_addr))
-        {
-            std::cout << "Session closed due to an error" std::endl;
 
+        sock = CreateSocket_IPv4();
+
+        if(BindSocket(sock, serv_addr))
+        {
+            std::cout << "Session closed due to an error" << std::endl;
+            return EXIT_FAILURE;
         }
 
         listen(sock, 0);
@@ -86,7 +96,8 @@ public:
         
         int broadcast = 1;
 
-        setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast));
+        if(setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&broadcast), sizeof(broadcast)) != 0)
+            std::cerr << "ERROR setting socket options" << std::endl;
         return sock;
     }
     
@@ -161,16 +172,10 @@ public:
         std::cout << "Session closed" << std::endl;
     }
     
-    ~TCP_server()
-    {
-        delete instance;
-    }
-    
-    TCP_server(TCP_server& other) = delete;
-    void operator=(TCP_server&) = delete;
+    ~TCP_server(){};
 };
 
 
-TCP_server* TCP_server::instance = nullptr;
+std::shared_ptr<TCP_server> TCP_server::instance = nullptr;
 
 

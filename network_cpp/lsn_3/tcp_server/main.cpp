@@ -1,5 +1,3 @@
-#pragma once
-
 #include "TCP_server.cpp"
 #include "stdlib.h"
 #include <iostream>
@@ -9,7 +7,7 @@ int main(int argc, char const *argv[]){
     std::string argument;
     std::cin >> argument;
 
-    TCP_server *serv = TCP_server::getServerInstatnce();
+    std::shared_ptr<TCP_server> serv = TCP_server::getServerInstatnce();
 
     const int port = std::stoi(argument);
 
