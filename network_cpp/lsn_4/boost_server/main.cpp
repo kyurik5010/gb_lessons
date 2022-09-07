@@ -1,23 +1,20 @@
 #include <iostream>
-#include "server.cpp"
+#include "src/server_interface.h"
 
+/**
+1. Добавьте в сервер возможность отдавать части файла по смещению и размеру.
+2. Переработайте код потоков TCP-сервера, обрабатывающих запросы клиента, используя Asio,
+   либо Boost.Asio так, чтобы работа с клиентскими запросами внутри потока велась асинхронно.
 
+   ЗАДАЧА - сделать так чтобы никто не знал что это буст
+
+3.* Добавьте загрузку файла клиентом в несколько потоков.
+    Измерьте скорость загрузки и сравните её с предыдущей версией клиента.*/
 
 int main()
 {
-    try
-    {
-	    // io_context предоставляет службы ввода-вывода, которые будет использовать сервер, такие как сокеты.
-        boost::asio::io_context io_context;
-        TcpServer server(io_context);
-
-        // Запуск асинхронных операций.
-        io_context.run();
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
+    std::shared_ptr<Interface> interface = Interface::get_interface();
+    interface->start_server_on_port(5555);
 
     return EXIT_SUCCESS;
 }

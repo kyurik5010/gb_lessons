@@ -75,7 +75,7 @@ build cmake_object_order_depends_target_serv: phony || CMakeFiles/serv.dir
 build CMakeFiles/serv.dir/main.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/main.cpp || cmake_object_order_depends_target_serv
   DEP_FILE = CMakeFiles/serv.dir/main.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
-  INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include
+  INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
   OBJECT_DIR = CMakeFiles/serv.dir
   OBJECT_FILE_DIR = CMakeFiles/serv.dir
 
