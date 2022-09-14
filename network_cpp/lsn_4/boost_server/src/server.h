@@ -5,30 +5,37 @@
 
 #include "connection.h"
 
-#include <ctime>
-#include <functional>
 #include <iostream>
 #include <memory>
-#include <string>
-#include <boost/system/error_code.hpp>
+#include <future>
+#include <vector>
+#include <chrono>
 #include <boost/asio.hpp>
-
-
-const int echo_port = 1300;
+#include <boost/thread.hpp>
+#include <boost/system/error_code.hpp>
 
 using namespace boost::asio;
-class TcpServer
-{
-private:
-    io_context& _io_context;
-    ip::tcp::acceptor _acceptor;
 
+class F_Server{
+private:
+    int _timer;
+    std::vector<std::future<int>> client_operations;
+    std::shared_ptr<io_context> _io;
+    ip::tcp::acceptor _acc;
+    typedef std::shared_ptr<ip::tcp::socket> socket_ptr;
+    int check_client_operations();
 public:
-    TcpServer(boost::asio::io_context& io_context);
+    F_Server(int, int);
 
-private:
-    void start_accept();
-    void handle_accept(TcpConnection::pointer new_connection, const boost::system::error_code& error);
+    ~F_Server();
+
+    void accept_connection(); //в цикле принимает соединение и вызывает get_client()
+
+    void set_timer(int); //установка таймера ожидания подключений
+
+    void deadline_handler(const boost::system::error_code &);
+
+    void get_client();
 };
 
-#endif
+#endif //BOOST_SERVER_SERVER_H

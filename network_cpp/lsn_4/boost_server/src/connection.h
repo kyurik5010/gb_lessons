@@ -1,44 +1,40 @@
 #ifndef BOOST_SERVER_CONNECTION_H
 #define BOOST_SERVER_CONNECTION_H
 
-
 #pragma once
 
-#include <ctime>
-#include <functional>
 #include <iostream>
-#include <memory>
-#include <string>
-#include <boost/system/error_code.hpp>
+#include <algorithm>
+#include <vector>
+#include <optional>
+#include <array>
+#include <filesystem>
+#include <fstream>
 #include <boost/asio.hpp>
+#include <boost/system/error_code.hpp>
 
-std::string make_daytime_string();
 
-// Указатель shared_ptr и enable_shared_from_this нужны для того,
-// чтобы сохранить объект tcp_connection до завершения выполнения операции.
+using namespace boost::asio;
+namespace FS = std::filesystem;
 
-class TcpConnection : public std::enable_shared_from_this<TcpConnection>
+class NewCon
 {
 private:
-    boost::asio::ip::tcp::socket socket_;
-    std::string message_;
-
-private:
-    TcpConnection(boost::asio::io_context& io_context);
-
-    void handle_write(const boost::system::error_code& /*error*/, size_t bytes_transferred);
-
+    FS::path _file_path;
+    ip::tcp::socket _client;
 public:
-    typedef std::shared_ptr<TcpConnection> pointer;
+    std::string get_request();                                      // получить сырой путь
 
-    static pointer create(boost::asio::io_context& io_context);
+    std::optional<FS::path> reinterpret(std::string raw_path);      // перевести сырой путь в объект пути
 
-    boost::asio::ip::tcp::socket& socket();
+    int send_file();                                               // отправить файл
 
-    // В методе start(), вызывается asio::async_write(), отправляющий данные клиенту.
-    // Здесь используется asio::async_write(), вместо ip::tcp::socket::async_write_some(), чтобы весь блок данных был гарантированно отправлен.
-    void start();
+    explicit NewCon(io_context &connection);
+
+    ~NewCon();
 };
 
 
-#endif
+
+
+#endif //BOOST_SERVER_CONNECTION_H
