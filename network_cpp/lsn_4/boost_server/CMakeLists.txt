@@ -9,5 +9,10 @@ set(CMAKE_CXX_STANDARD 17 REQUIRED)
 set(BOOST_INC "/usr/local/cellar/boost/1.79.0_1/include/")
 include_directories(${BOOST_INC})
 
-add_executable(serv main.cpp)
+set(Source src/interface.cpp
+        src/server.cpp
+        src/connection.cpp
+        )
+
+add_executable(serv main.cpp ${Source})
 target_include_directories(serv PUBLIC src)

@@ -1,21 +1,28 @@
+
+#include "src/interface.h"
 #include <iostream>
-#include "src/server_interface.h"
 
-/**
-1. Добавьте в сервер возможность отдавать части файла по смещению и размеру.
-2. Переработайте код потоков TCP-сервера, обрабатывающих запросы клиента, используя Asio,
-   либо Boost.Asio так, чтобы работа с клиентскими запросами внутри потока велась асинхронно.
+int main(int argc, const char *argv[]){
+    if(argc < 2)
+    {
+        std::cerr << "Usage: <port>" << std::endl;
+        return EXIT_FAILURE;
+    }
 
-   ЗАДАЧА - сделать так чтобы никто не знал что это буст
+    Interface inter;
+    int port = std::stoi(argv[1]);
 
-3.* Добавьте загрузку файла клиентом в несколько потоков.
-    Измерьте скорость загрузки и сравните её с предыдущей версией клиента.*/
+    if(argv[2])
+    {
+        inter.set_timer(std::stoi(argv[2]));
+        std::cout << "Client connection timeout set to " << argv[2] << " seconds" << std::endl;
+    }
+    else
+        std::cout << "Default client connection timeout: 60 seconds" << std::endl;
 
-int main()
-{
-    std::shared_ptr<Interface> interface = Interface::get_interface();
-    interface->start_server_on_port(5555);
+    std::cout << "Starting server on port " << argv[1] << std::endl;
+
+    inter.launch_server_on_port(port);
 
     return EXIT_SUCCESS;
 }
-

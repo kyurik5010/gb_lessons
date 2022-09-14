@@ -79,6 +79,27 @@ build CMakeFiles/serv.dir/main.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajl
   OBJECT_DIR = CMakeFiles/serv.dir
   OBJECT_FILE_DIR = CMakeFiles/serv.dir
 
+build CMakeFiles/serv.dir/src/interface.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/interface.cpp || cmake_object_order_depends_target_serv
+  DEP_FILE = CMakeFiles/serv.dir/src/interface.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
+  INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
+  OBJECT_DIR = CMakeFiles/serv.dir
+  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+
+build CMakeFiles/serv.dir/src/server.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/server.cpp || cmake_object_order_depends_target_serv
+  DEP_FILE = CMakeFiles/serv.dir/src/server.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
+  INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
+  OBJECT_DIR = CMakeFiles/serv.dir
+  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+
+build CMakeFiles/serv.dir/src/connection.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/connection.cpp || cmake_object_order_depends_target_serv
+  DEP_FILE = CMakeFiles/serv.dir/src/connection.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
+  INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
+  OBJECT_DIR = CMakeFiles/serv.dir
+  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target serv
@@ -87,7 +108,7 @@ build CMakeFiles/serv.dir/main.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajl
 #############################################
 # Link the executable serv
 
-build serv: CXX_EXECUTABLE_LINKER__serv_Debug CMakeFiles/serv.dir/main.cpp.o
+build serv: CXX_EXECUTABLE_LINKER__serv_Debug CMakeFiles/serv.dir/main.cpp.o CMakeFiles/serv.dir/src/interface.cpp.o CMakeFiles/serv.dir/src/server.cpp.o CMakeFiles/serv.dir/src/connection.cpp.o
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk
   OBJECT_DIR = CMakeFiles/serv.dir
   POST_BUILD = :
