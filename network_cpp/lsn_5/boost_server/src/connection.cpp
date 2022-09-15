@@ -43,7 +43,7 @@ std::string NewCon::get_request()
                 std::cerr << "ERROR Socket read: " << error.value() << std::endl;
             }
         });
-    *buf.end() = '\0';
+
     std::copy(buf.begin(), buf.end(), raw_path.begin());
     std::cout << "Client request: " << raw_path << std::endl;
     return raw_path;
