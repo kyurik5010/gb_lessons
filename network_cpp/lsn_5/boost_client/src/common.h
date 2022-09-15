@@ -14,7 +14,6 @@
 #include <memory>
 #include <future>
 #include <list>
-//#include <utility>
 #include <chrono>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
