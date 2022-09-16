@@ -8,7 +8,11 @@
 
 namespace fs = std::filesystem;
 
-Client::~Client() { std::cout << "Client stopping" << std::endl; }
+Client::~Client()
+{
+    std::cout << "Client stopping" << std::endl;
+    _io->stop();
+}
 
 Client::Client(std::string&& ip, int port, std::string custom_path):
 _io(std::make_shared<boost::asio::io_context>()),
@@ -47,6 +51,7 @@ bool Client::set_download_dir(std::string&& name)
 }
 
 bool Client::check_tasks() {
+    std::cout << "Checking running tasks ... " <<std::endl;
     if(_tasks.empty())
     {
         std::cout << "No active operations" << std::endl;
@@ -54,11 +59,18 @@ bool Client::check_tasks() {
     }
 
     for(int i=0; i<_tasks.size(); ++i)
-        if(_tasks[i]->task_complete())
+    {
+        if (_tasks[i]->task_info()->status == TASK::STATE.READY)
         {
             std::cout << "'" << _tasks[i]->task_info()->cr_file_name << "' download complete" << std::endl;
             Client::pop_task(i);
         }
+        else if (_tasks[i]->task_info()->status == TASK::STATE.ERROR)
+        {
+            std::cout << "Task '" << _tasks[i]->task_info()->cr_file_name << "' incomplete do to error" << std::endl;
+            Client::pop_task(i);
+        }
+    }
     std::cout << _tasks.size() << " operations in progress" << std::endl;
     return true;
 }
@@ -79,7 +91,7 @@ bool Client::get_file(std::string&& file)
 void Client::get_file_path(std::string&& file)
 {
     _file_name = std::move(file);
-    std::cout << "Serching for '" << _file_name << "'" << std::endl;
+    std::cout << "Searching for '" << _file_name << "'" << std::endl;
     std::string cur_path = static_cast<std::string>(fs::current_path());
     auto iter = cur_path.find("boost_client/");
     cur_path.erase(cur_path.begin()+static_cast<int>(iter), cur_path.end());
@@ -87,6 +99,7 @@ void Client::get_file_path(std::string&& file)
 }
 
 bool Client::check_path(std::string& file_path) {
+    std::cout << "Checking path '" << file_path << "'" << std::endl;
     fs::path check = fs::weakly_canonical(file_path);
     if (! (fs::exists(check) && fs::is_regular_file(check)) )
     {
@@ -98,6 +111,7 @@ bool Client::check_path(std::string& file_path) {
 
 int Client::push_task()
 {
+    std::cout << "Assembling a task for the server" << std::endl;
     client_request task;
     task.cr_port = _port;
     task.cr_ip_address = _server_ip;
@@ -107,12 +121,13 @@ int Client::push_task()
     task.status = TASK::STATE.BUSY;
     task.keep_connection = true;
 
+    _tasks.emplace_back(std::make_shared<Connection>(std::move(task), _io));
 
-    _tasks.emplace_back(std::make_shared<Connection>(std::move(task), *_io));
+    std::thread thr (&Connection::connect_to_server, &(*_tasks.back()) );                                             /**!!!!!!!!!!!!!!!!!!!*/
+    std::cout << "Task pushed" << std::endl;
+    thr.detach();
 
-    std::thread thr (&Connection::connect_to_server, &(*_tasks.back()) );
-
-     return 0;
+    return 0;
 }
 
 void Client::pop_task(int task) {

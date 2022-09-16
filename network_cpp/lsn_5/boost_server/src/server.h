@@ -2,17 +2,10 @@
 #define BOOST_SERVER_SERVER_H
 
 #pragma once
-
+#include "common.h"
 #include "connection.h"
 
-#include <iostream>
-#include <memory>
-#include <future>
-#include <vector>
-#include <chrono>
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
-#include <boost/system/error_code.hpp>
+
 
 using namespace boost::asio;
 
@@ -31,7 +24,7 @@ public:
 
     void accept_connection(); //в цикле принимает соединение и вызывает get_client()
 
-    void set_timer(int); //установка таймера ожидания подключений
+    void set_timer(int); //установка таймера ожидания подключений (здесь пока не используется т.к. значение передается в конструктор)
 
     void deadline_handler(const boost::system::error_code &);
 

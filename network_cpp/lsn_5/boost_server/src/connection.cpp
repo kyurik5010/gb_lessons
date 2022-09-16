@@ -18,7 +18,7 @@ namespace INTERNAL{
 
 NewCon::~NewCon() {}
 
-NewCon::NewCon(io_context &connection): _client(connection) {}
+NewCon::NewCon(io_context &connection): _client(connection), _state(STATE::RUNNING) {}
 
 std::string NewCon::get_request()
 {
@@ -30,6 +30,7 @@ std::string NewCon::get_request()
         {
             if(!error)
             {
+                std::cout << bytes_transferred << " bytes recieved from client" << std::endl;
                 auto iter = std::find_if(buf.begin(), buf.end(), [](char sym)
                 {
                     return sym == '\n' || sym == '\r';
@@ -40,7 +41,8 @@ std::string NewCon::get_request()
             }
             else
             {
-                std::cerr << "ERROR Socket read: " << error.value() << std::endl;
+                std::cerr << "ERROR Socket read: " << error.message() << std::endl;
+                _state = STATE::ERROR;
             }
         });
 
@@ -74,12 +76,14 @@ int NewCon::send_file()
     if(std::nullopt == reinterpret(get_request()))
     {
         std::cerr << "ERROR Getting path to file" << std::endl;
+        _state = STATE::ERROR;
         return my_errors.NO_PATH;
     }
 
     if ( !(FS::exists(_file_path) && FS::is_regular_file(_file_path)) )
     {
         std::cerr << "ERROR Opening file" << std::endl;
+        _state = STATE::ERROR;
         return my_errors.BAD_PATH;
     }
 
@@ -89,6 +93,7 @@ int NewCon::send_file()
     if (!f_stream)
     {
         std::cerr << "ERROR Opening file" << std::endl;
+        _state = STATE::ERROR;
         return my_errors.NO_FILE;
     }
 
@@ -102,10 +107,13 @@ int NewCon::send_file()
                 (const boost::system::error_code& error, size_t bytes_transferred)
         {
             if(error)
-                std::cerr << "ERROR Socket send: " << error.value() << std::endl;
+            {
+                std::cerr << "ERROR Socket send: " << error.message() << std::endl;
+                _state = STATE::ERROR;
+            }
         });
     }
+    _state = STATE::COMPLETE;
     return 0;
 }
-
 

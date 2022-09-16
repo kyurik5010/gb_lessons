@@ -64,57 +64,57 @@ build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
 build edit_cache: phony CMakeFiles/edit_cache.util
 
 # =============================================================================
-# Object build statements for EXECUTABLE target serv
+# Object build statements for EXECUTABLE target boost_server
 
 
 #############################################
-# Order-only phony target for serv
+# Order-only phony target for boost_server
 
-build cmake_object_order_depends_target_serv: phony || CMakeFiles/serv.dir
+build cmake_object_order_depends_target_boost_server: phony || CMakeFiles/boost_server.dir
 
-build CMakeFiles/serv.dir/main.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/main.cpp || cmake_object_order_depends_target_serv
-  DEP_FILE = CMakeFiles/serv.dir/main.cpp.o.d
+build CMakeFiles/boost_server.dir/main.cpp.o: CXX_COMPILER__boost_server_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/main.cpp || cmake_object_order_depends_target_boost_server
+  DEP_FILE = CMakeFiles/boost_server.dir/main.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
   INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
-  OBJECT_DIR = CMakeFiles/serv.dir
-  OBJECT_FILE_DIR = CMakeFiles/serv.dir
+  OBJECT_DIR = CMakeFiles/boost_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/boost_server.dir
 
-build CMakeFiles/serv.dir/src/interface.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/interface.cpp || cmake_object_order_depends_target_serv
-  DEP_FILE = CMakeFiles/serv.dir/src/interface.cpp.o.d
+build CMakeFiles/boost_server.dir/src/interface.cpp.o: CXX_COMPILER__boost_server_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/interface.cpp || cmake_object_order_depends_target_boost_server
+  DEP_FILE = CMakeFiles/boost_server.dir/src/interface.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
   INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
-  OBJECT_DIR = CMakeFiles/serv.dir
-  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+  OBJECT_DIR = CMakeFiles/boost_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/boost_server.dir/src
 
-build CMakeFiles/serv.dir/src/server.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/server.cpp || cmake_object_order_depends_target_serv
-  DEP_FILE = CMakeFiles/serv.dir/src/server.cpp.o.d
+build CMakeFiles/boost_server.dir/src/server.cpp.o: CXX_COMPILER__boost_server_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/server.cpp || cmake_object_order_depends_target_boost_server
+  DEP_FILE = CMakeFiles/boost_server.dir/src/server.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
   INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
-  OBJECT_DIR = CMakeFiles/serv.dir
-  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+  OBJECT_DIR = CMakeFiles/boost_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/boost_server.dir/src
 
-build CMakeFiles/serv.dir/src/connection.cpp.o: CXX_COMPILER__serv_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/connection.cpp || cmake_object_order_depends_target_serv
-  DEP_FILE = CMakeFiles/serv.dir/src/connection.cpp.o.d
+build CMakeFiles/boost_server.dir/src/connection.cpp.o: CXX_COMPILER__boost_server_Debug /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src/connection.cpp || cmake_object_order_depends_target_boost_server
+  DEP_FILE = CMakeFiles/boost_server.dir/src/connection.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -std=gnu++17
   INCLUDES = -I/usr/local/cellar/boost/1.79.0_1/include -I/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src
-  OBJECT_DIR = CMakeFiles/serv.dir
-  OBJECT_FILE_DIR = CMakeFiles/serv.dir/src
+  OBJECT_DIR = CMakeFiles/boost_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/boost_server.dir/src
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target serv
+# Link build statements for EXECUTABLE target boost_server
 
 
 #############################################
-# Link the executable serv
+# Link the executable boost_server
 
-build serv: CXX_EXECUTABLE_LINKER__serv_Debug CMakeFiles/serv.dir/main.cpp.o CMakeFiles/serv.dir/src/interface.cpp.o CMakeFiles/serv.dir/src/server.cpp.o CMakeFiles/serv.dir/src/connection.cpp.o
+build boost_server: CXX_EXECUTABLE_LINKER__boost_server_Debug CMakeFiles/boost_server.dir/main.cpp.o CMakeFiles/boost_server.dir/src/interface.cpp.o CMakeFiles/boost_server.dir/src/server.cpp.o CMakeFiles/boost_server.dir/src/connection.cpp.o
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk
-  OBJECT_DIR = CMakeFiles/serv.dir
+  OBJECT_DIR = CMakeFiles/boost_server.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = serv
-  TARGET_PDB = serv.dbg
+  TARGET_FILE = boost_server
+  TARGET_PDB = boost_server.dbg
 
 # =============================================================================
 # Target aliases.
@@ -127,7 +127,7 @@ build serv: CXX_EXECUTABLE_LINKER__serv_Debug CMakeFiles/serv.dir/main.cpp.o CMa
 #############################################
 # Folder: /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug
 
-build all: phony serv
+build all: phony boost_server
 
 # =============================================================================
 # Unknown Build Time Dependencies.

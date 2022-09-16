@@ -44,8 +44,8 @@ void F_Server::deadline_handler(const boost::system::error_code & error)
     std::cout << "No connections recieved" << std::endl;
     std::this_thread::sleep_for(s{2});
 
-    if(0 != error.value())
-        std::cerr << "ERROR timer: " << error.value() << std::endl;
+    if(error)
+        std::cerr << "ERROR timer: " << error.message() << std::endl;
     else if(0 == check_client_operations())
     {
         std::cout << "No active client operations" << std::endl;
@@ -68,9 +68,9 @@ void F_Server::accept_connection()
     socket_ptr sock(new ip::tcp::socket(*_io));
 
     _acc.async_accept(*sock,[&](const boost::system::error_code& error){
-        if(0 != error.value())
+        if(error)
         {
-            std::cerr << "ERROR Accepting connection: " << error.value() << std::endl;
+            std::cerr << "ERROR Accepting connection: " << error.message() << std::endl;
             // в случае ошибки последующие соединения не ожидаются
         }   // но таймер будет перезапущен и по истечении минуты, если вектор пуст, accept_connection() завершится
         else
@@ -95,7 +95,8 @@ void F_Server::get_client()
 
     std::shared_ptr<NewCon> connection = std::make_shared<NewCon>(*_io);
 
-    std::future<int> future = std::async(std::launch::async, create_request, std::move(connection));
+    std::future<int> future = std::async(std::launch::async,create_request, std::move(connection));
+            // );
 
     client_operations.push_back(std::move(future)); // вектор задач
 

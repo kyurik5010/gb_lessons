@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "serv::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-serv-Debug-83ce77a8f16f4986f072.json",
-					"name" : "serv",
+					"id" : "boost_server::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-boost_server-Debug-40902db1f453d632210e.json",
+					"name" : "boost_server",
 					"projectIndex" : 0
 				}
 			]
