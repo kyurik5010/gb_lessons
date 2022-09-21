@@ -27,8 +27,6 @@ public:
 
     std::optional<FS::path> reinterpret(std::string raw_path);      // перевести сырой путь в объект пути
 
-    size_t resend_data(std::vector<std::vector<char>>&);
-
     int send_file();                                               // отправить файл
 
     explicit NewCon(io_context &connection, int port, ip::tcp::socket &&sock);

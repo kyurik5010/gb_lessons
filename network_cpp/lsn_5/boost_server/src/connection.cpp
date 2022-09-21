@@ -155,18 +155,13 @@ int NewCon::send_file()
     while (bytes_count)
     {
         size_t bytes_written = 0;
-        bytes_written += _sock->write_some(buffer, error);
+        bytes_written += _sock->write_some(boost::asio::buffer(buffer), error);
         if(error)
         {
             if(error.value() == 2)
             {
                 std::cout << "End of outgoing buffer" << std::endl;
                 break;
-            }
-            else if(error.value() == 54) // Connection reset by peer
-            {
-                bytes_written = resend_data(buffer);
-
             }
             else
             {
@@ -184,31 +179,6 @@ int NewCon::send_file()
     else
         _state = STATE::ERROR;
     return 0;
-}
-
-size_t NewCon::resend_data(std::vector<std::vector<char>> &buffer)
-{
-    size_t bytes_written = 0;
-    bytes_written += _sock->write_some(boost::asio::buffer(buffer), error);
-    if(error)
-    {
-        if(error.value() == 2)
-        {
-            std::cout << "End of outgoing buffer" << std::endl;
-            break;
-        }
-        else if(error.value() == 54) // Connection reset by peer
-        {
-            resend_data();
-        }
-        else
-        {
-            std::cerr << "ERROR Socket send: " << error.value() << " - " << error.message() << std::endl;
-            _state = STATE::ERROR;
-            return 1;
-        }
-    }
-    return bytes_written;
 }
 
 int NewCon::get_connection_state() const {
