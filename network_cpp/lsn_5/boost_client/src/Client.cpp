@@ -50,7 +50,8 @@ bool Client::set_download_dir(std::string&& name)
     return true;
 }
 
-bool Client::check_tasks() {
+bool Client::check_tasks()
+{
     std::cout << "Checking running tasks ... " <<std::endl;
     if(_tasks.empty())
     {
@@ -98,7 +99,8 @@ void Client::get_file_path(std::string&& file)
     _file_path = cur_path + "boost_server/" + _file_name;
 }
 
-bool Client::check_path(std::string& file_path) {
+bool Client::check_path(std::string& file_path)
+{
     std::cout << "Checking path '" << file_path << "'" << std::endl;
     fs::path check = fs::weakly_canonical(file_path);
     if (! (fs::exists(check) && fs::is_regular_file(check)) )
@@ -123,14 +125,15 @@ int Client::push_task()
 
     _tasks.emplace_back(std::make_shared<Connection>(std::move(task), _io));
 
-    std::thread thr (&Connection::connect_to_server, &(*_tasks.back()) );                                             /**!!!!!!!!!!!!!!!!!!!*/
-    std::cout << "Task pushed" << std::endl;
+    std::thread thr (&Connection::connect_to_server, &(*_tasks.back()) );
+    std::cout << "Task pushed, " << _tasks.size() << " operations in progress" << std::endl;
     thr.detach();
 
     return 0;
 }
 
-void Client::pop_task(int task) {
+void Client::pop_task(int task)
+{
     _tasks[task]->kill();
     _tasks.erase(_tasks.begin()+task);
 }

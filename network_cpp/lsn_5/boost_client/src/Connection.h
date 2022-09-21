@@ -16,23 +16,24 @@ class Connection
 {
 private:
     boost::asio::ip::tcp::socket _sock;
-    //boost::asio::ip::tcp::endpoint _ep;
     std::shared_ptr<boost::asio::io_context> _io;
     client_request _task;
 public:
     Connection(client_request&&, std::shared_ptr<boost::asio::io_context> context);
 
-    void connect_to_server(); // выполняет соединение с сервером
+    void connect_to_server();    // выполняет соединение с сервером
 
-    bool establish_connection();
+    bool establish_connection(); //выполняет содеинение с сервером
 
-    bool send_request();      // посылает запрос
+    int wait_for_data();         // цикл ожидания появления данных на сокете
 
-    bool recieve_file();      // получает и сохраняет файл
+    bool send_request();         // посылает запрос
 
-    void set_signal(int);     // устанавливает status в структуре запроса для сигнализирования об окончании работы соединения
+    bool recieve_file();         // получает и сохраняет файл
 
-    bool task_complete();     // парсит значение result в структуре client_request
+    void set_signal(int);        // устанавливает status в структуре запроса для сигнализирования об окончании работы соединения
+
+    bool task_complete();        // парсит значение result в структуре client_request (не используется)
 
     [[nodiscard]] const client_request* task_info() const; //возвращает  ссылку на структуру задачи
 

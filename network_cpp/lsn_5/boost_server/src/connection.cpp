@@ -8,7 +8,7 @@
 #define MAX_BUF (4096)
 #endif
 
-namespace INTERNAL{
+namespace INTERNAL{ //убрать потом, не удобно
     union MY_ERRORS{
         int BAD_PATH = 1;
         int NO_FILE;
@@ -16,44 +16,70 @@ namespace INTERNAL{
    } my_errors;
 }
 
-NewCon::~NewCon() {}
+NewCon::~NewCon()
+{
+    std::cout << "Connection '" << std::this_thread::get_id() << "' pending termination" << std::endl;
+    while(_keep_alive)
+    {
+        std::this_thread::sleep_for(s{1});
+    }
+    std::cout << "Connection '" << std::this_thread::get_id() << "' closed" << std::endl;
+}
 
-NewCon::NewCon(io_context &connection): _client(connection), _state(STATE::RUNNING) {}
+NewCon::NewCon(io_context &connection, int port, ip::tcp::socket &&sock):
+
+_state(STATE::RUNNING),
+_keep_alive(true),
+_port(port),
+_sock(std::make_shared<ip::tcp::socket>(std::move(sock)))                                                            // запомнить: сокет нужно передавать с сервера
+{
+    std::cout << _sock->remote_endpoint().address().to_string() << ":" << _sock->remote_endpoint().port() << " connected!" << std::endl;
+}
 
 std::string NewCon::get_request()
 {
-    std::vector<char> buf;
-    std::string raw_path;
 
-    _client.async_read_some(boost::asio::buffer(buf),[&]
-        (const boost::system::error_code& error, size_t bytes_transferred)
+    boost::asio::streambuf::mutable_buffers_type bufs = _buffer.prepare(MAX_PATH);
+
+    std::this_thread::sleep_for(s{1});
+
+    if(_sock->available() == 0)
+        std::cout << "ERROR No data on socket" << std::endl;
+
+    size_t bytes_read = 0;
+
+    while(bytes_read != MAX_PATH)
+    {
+        bytes_read += _sock->read_some(boost::asio::buffer(bufs), error);
+        if (error)
         {
-            if(!error)
+            if(error.value() == 2)
             {
-                std::cout << bytes_transferred << " bytes recieved from client" << std::endl;
-                auto iter = std::find_if(buf.begin(), buf.end(), [](char sym)
-                {
-                    return sym == '\n' || sym == '\r';
-                });
-
-                    if (buf.end() != iter)
-                        *iter = '\0';
+                std::cout << "End of incoming transmission " << std::endl;
+                break;
             }
-            else
-            {
-                std::cerr << "ERROR Socket read: " << error.message() << std::endl;
-                _state = STATE::ERROR;
-            }
-        });
+            std::cout << "ERROR Socket read: " << error.value() << ": " << error.message() << std::endl;
+            _state = STATE::ERROR;
+        }
+        else
+        {
+            std::cout << bytes_read << " bytes recieved from client" << std::endl;
+        }
+    }
 
-    std::copy(buf.begin(), buf.end(), raw_path.begin());
-    std::cout << "Client request: " << raw_path << std::endl;
-    return raw_path;
+    _buffer.commit(bytes_read);
+
+    std::istream i_stream(&_buffer);
+
+    std::getline(i_stream, _raw_line);
+
+    return _raw_line;
 }
 
 std::optional<FS::path> NewCon::reinterpret(std::string raw)
 {
 
+    std::cout << "Analyzing clients' path: " << std::endl;
     std::string cur_path = static_cast<std::string>(FS::path(FS::current_path()));
 
     if(raw.empty())
@@ -62,58 +88,134 @@ std::optional<FS::path> NewCon::reinterpret(std::string raw)
         return std::nullopt;
     }
 
-    std::size_t found = raw.find(cur_path);
+    auto pos = std::mismatch(cur_path.begin(), cur_path.end(), raw.begin());
 
-    if(found != std::string::npos)
-        raw = raw.substr(found, cur_path.length());
+    std::cout << "Clients request: " << std::string(pos.second, raw.end()) << std::endl;
 
-    return _file_path = FS::weakly_canonical(cur_path + FS::path::preferred_separator + raw);
+    if(pos.second != cur_path.begin())
+        _file_path = FS::weakly_canonical(raw);
+    else
+        _file_path = FS::weakly_canonical(cur_path + FS::path::preferred_separator + raw);
+
+    return _file_path;
 }
 
 int NewCon::send_file()
 {
     using namespace INTERNAL;
-    if(std::nullopt == reinterpret(get_request()))
+
+    if (std::nullopt == reinterpret(get_request()))
     {
         std::cerr << "ERROR Getting path to file" << std::endl;
         _state = STATE::ERROR;
-        return my_errors.NO_PATH;
+        return 1;
     }
 
-    if ( !(FS::exists(_file_path) && FS::is_regular_file(_file_path)) )
+    else if( !(FS::exists(_file_path) && FS::is_regular_file(_file_path)) )
     {
-        std::cerr << "ERROR Opening file" << std::endl;
+        std::cerr << "ERROR Bad file" << std::endl;
         _state = STATE::ERROR;
-        return my_errors.BAD_PATH;
+        return 1;
     }
 
-    std::vector<char> buffer(MAX_BUF);
     std::ifstream f_stream(_file_path);
 
     if (!f_stream)
     {
         std::cerr << "ERROR Opening file" << std::endl;
         _state = STATE::ERROR;
-        return my_errors.NO_FILE;
+        return 1;
     }
 
     std::cout << "Sending file " << _file_path << "..." << std::endl;
 
-    while (f_stream)
-    {
-        f_stream.read(&buffer[0], buffer.size()); // читаем в буфер из файлового потока по 4096 байт
+    std::vector<std::vector<char>> buffer;
 
-        _client.async_send(boost::asio::buffer(buffer), [&]
-                (const boost::system::error_code& error, size_t bytes_transferred)
+    std::cout << "Preparing data for transmission" << std::endl;
+
+    char c;
+    while(f_stream)
+    {
+        std::vector<char> arr;
+        while (arr.size() < MAX_BUF && !f_stream.eof())
         {
-            if(error)
-            {
-                std::cerr << "ERROR Socket send: " << error.message() << std::endl;
-                _state = STATE::ERROR;
-            }
-        });
+            f_stream.get(c);
+            arr.push_back(c);
+        }
+        buffer.push_back(arr);
     }
-    _state = STATE::COMPLETE;
+
+    size_t bytes_count = 0;
+
+    for(auto x : buffer)
+        bytes_count += x.size();
+
+    std::cout << buffer.size() << " chunks of data prepared for transmission (" << bytes_count << " bytes)" << std::endl;
+
+    while (bytes_count)
+    {
+        size_t bytes_written = 0;
+        bytes_written += _sock->write_some(buffer, error);
+        if(error)
+        {
+            if(error.value() == 2)
+            {
+                std::cout << "End of outgoing buffer" << std::endl;
+                break;
+            }
+            else if(error.value() == 54) // Connection reset by peer
+            {
+                bytes_written = resend_data(buffer);
+
+            }
+            else
+            {
+                std::cerr << "ERROR Socket send: " << error.value() << " - " << error.message() << std::endl;
+                _state = STATE::ERROR;
+                return 1;
+            }
+        }
+        else
+            std::cout << bytes_written << " written to socket" << std::endl;
+        bytes_count -= bytes_written;
+    }
+    if(bytes_count <= 0)
+        _state = STATE::COMPLETE;
+    else
+        _state = STATE::ERROR;
     return 0;
+}
+
+size_t NewCon::resend_data(std::vector<std::vector<char>> &buffer)
+{
+    size_t bytes_written = 0;
+    bytes_written += _sock->write_some(boost::asio::buffer(buffer), error);
+    if(error)
+    {
+        if(error.value() == 2)
+        {
+            std::cout << "End of outgoing buffer" << std::endl;
+            break;
+        }
+        else if(error.value() == 54) // Connection reset by peer
+        {
+            resend_data();
+        }
+        else
+        {
+            std::cerr << "ERROR Socket send: " << error.value() << " - " << error.message() << std::endl;
+            _state = STATE::ERROR;
+            return 1;
+        }
+    }
+    return bytes_written;
+}
+
+int NewCon::get_connection_state() const {
+    return _state;
+}
+
+void NewCon::set_connection_state(int new_state) {
+    _state = new_state;
 }
 

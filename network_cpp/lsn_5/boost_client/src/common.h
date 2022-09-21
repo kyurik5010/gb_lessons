@@ -19,11 +19,16 @@
 #include <boost/thread.hpp>
 #include <boost/system/error_code.hpp>
 
+#ifndef MAX_PATH
+#define MAX_PATH (256)
+#endif
+
+
 namespace TASK
 {
     static union state
     {
-        int READY;                   // задача выполнена
+        int READY = 0;                   // задача выполнена
         int ERROR;                   // ошибка
         int BUSY;                    // задача в работе
     }STATE;

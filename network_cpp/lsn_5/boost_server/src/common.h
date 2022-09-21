@@ -18,11 +18,14 @@
 #include <boost/system/error_code.hpp>
 
 
+using ms = std::chrono::milliseconds;
+using s = std::chrono::seconds;
+
 namespace STATE
 {
-    int COMPLETE = 0;
-    int ERROR = 1;
-    int RUNNING = 2;
+    const int COMPLETE = 0;
+    const int ERROR = 1;
+    const int RUNNING = 2;
 }
 
 
