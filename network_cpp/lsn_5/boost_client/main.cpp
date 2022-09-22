@@ -27,7 +27,7 @@ int main(int argc, const char *argv[]){
 
     while(run)
     {
-        std::this_thread::sleep_for(std::chrono::seconds{5});
+        std::this_thread::sleep_for(std::chrono::seconds{10});
         run = client.check_tasks();
     }
 

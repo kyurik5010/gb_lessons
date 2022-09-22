@@ -18,6 +18,11 @@ private:
     boost::asio::ip::tcp::socket _sock;
     std::shared_ptr<boost::asio::io_context> _io;
     client_request _task;
+    struct __session{
+        size_t total_bytes = 0;
+        bool run;
+    }_session;
+
 public:
     Connection(client_request&&, std::shared_ptr<boost::asio::io_context> context);
 
@@ -25,7 +30,7 @@ public:
 
     bool establish_connection(); //выполняет содеинение с сервером
 
-    int wait_for_data();         // цикл ожидания появления данных на сокете
+    bool wait_for_data();         // цикл ожидания появления данных на сокете
 
     bool send_request();         // посылает запрос
 

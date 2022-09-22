@@ -10,8 +10,8 @@ namespace fs = std::filesystem;
 
 Client::~Client()
 {
-    std::cout << "Client stopping" << std::endl;
     _io->stop();
+    std::cout << "Client stopped" << std::endl;
 }
 
 Client::Client(std::string&& ip, int port, std::string custom_path):
@@ -52,6 +52,7 @@ bool Client::set_download_dir(std::string&& name)
 
 bool Client::check_tasks()
 {
+
     std::cout << "Checking running tasks ... " <<std::endl;
     if(_tasks.empty())
     {

@@ -12,8 +12,13 @@ using s = std::chrono::seconds;
 
 
 Connection::~Connection() {
+    std::cout << "Connection '" << std::this_thread::get_id() << "' pending termination" << std::endl;
+    while(_task.keep_connection)
+    {
+        std::this_thread::sleep_for(s{5});                                /**плейсхолдер, может не потребоваться*/
+    }
+    _sock.close();
     std::cout << "Connection '" << std::this_thread::get_id() << "' closed" << std::endl;
-    _sock.close();                                                                   /**возможно этого делать не стоит*/
 }
 
 Connection::Connection(client_request &&task, std::shared_ptr<boost::asio::io_context> context) :
@@ -48,7 +53,6 @@ _sock(*context)
 //    }
     Connection::set_signal(TASK::STATE.BUSY);
     std::cout << "New task ID: " << std::this_thread::get_id() << std::endl;
-    //bool is_set = option.value();
 }
 
 
@@ -65,23 +69,12 @@ void Connection::connect_to_server() {
         std::cout<< "ERROR Request not sent" << std::endl;
     }
 
-    std::this_thread::sleep_for(s{2});
-
     if (!Connection::recieve_file())
     {
         std::cout << "ERROR File not recieved" << std::endl;
     }
-    else
-        Connection::set_signal(TASK::STATE.READY);
 
-
-    std::cout << "Connection '" << std::this_thread::get_id() << "' pending termination" << std::endl;
-    while(_task.keep_connection)
-    {
-        std::this_thread::sleep_for(s{5});                                /**плейсхолдер, может не потребоваться*/
-    }
     _io->run();
-
 }
 
 bool Connection::establish_connection()
@@ -92,7 +85,7 @@ bool Connection::establish_connection()
 
     ip::tcp::endpoint end(ip::address::from_string(_task.cr_ip_address), _task.cr_port);
 
-    _sock.connect(end, error); //                  не отрабатывает
+    _sock.connect(end, error);
         std::cout << "Attempting connection to server at addr: " << _task.cr_ip_address << ", port: " << _task.cr_port << std::endl;
         if(error)
         {
@@ -111,44 +104,68 @@ bool Connection::establish_connection()
 
 bool Connection::send_request()
 {
-    bool result;
     boost::system::error_code error;
-
+    //_session.run = true;
+    std::cout << "Request size - " << _task.cr_path.length() << " bytes" << std::endl;
     boost::asio::mutable_buffers_1 buf = boost::asio::buffer(_task.cr_path, _task.cr_path.length());
-    boost::asio::streambuf _buffer;
 
-//    size_t written = 0;
-//    while (written != _task.cr_path.length())
-//    {
-//        written += _sock.write_some(asio::buffer(_task.cr_path.c_str() + written, _task.cr_path.length() - written));
-//    }
+    boost::asio::async_write(_sock, buf, [&](const boost::system::error_code& error, size_t bytes_sent)
+         {
+             if (error)
+             {
+                 if (error.value() == 2)
+                     std::cout << "End of file" << std::endl;
+                 Connection::set_signal(TASK::STATE.ERROR);
+                 std::cout << "ERROR Sending request: " << error.value() << " - " << error.message() << std::endl;
+                 //_session.run = false;
+             }
+             else
+             {
+                 _session.total_bytes += bytes_sent;
+                 std::cout << bytes_sent << " bytes sent to server" << std::endl;
+             }
+         });
 
-    int bytes_written;
-    bytes_written = write(_sock, buf, error);
-    if(error)
-    {
-        Connection::set_signal(TASK::STATE.ERROR);
-        std::cout << "ERROR Sending request: " << error.value() << " - " << error.message() << std::endl;
-        result = false;
-    }
+    std::cout << _session.total_bytes << " bytes sent to server" << std::endl;
+//    while(_session.run)
+//         _sock.async_write_some(buf, [&](const boost::system::error_code& error, size_t bytes_sent)
+//         {
+//             if (error)
+//             {
+//                 if (error.value() == 2)
+//                     std::cout << "End of file" << std::endl;
+//                 Connection::set_signal(TASK::STATE.ERROR);
+//                 std::cout << "ERROR Sending request: " << error.value() << " - " << error.message() << std::endl;
+//                 _session.run = false;
+//             }
+//             else
+//             {
+//                 _session.total_bytes += bytes_sent;
+//                 if(_session.total_bytes == _task.cr_path.length())
+//                     _session.run = false;
+//                 std::cout << bytes_sent << " bytes sent to server" << std::endl;
+//             }
+//         });
+    if(error && error.value() != 2)
+        return false;
     else
-    {
-        std::cout << bytes_written << " bytes sent to server" << std::endl;
-        result = true;
-    }
-    return result;
+        return true;
+
 }
 
-int Connection::wait_for_data()
+bool Connection::wait_for_data()
 {
     int wait = 10;
     while(_sock.available() == 0)
     {
-        std::this_thread::sleep_for(s{1});
+        _sock.async_wait(boost::asio::ip::tcp::socket::wait_read ,[](const boost::system::error_code& error){
+            if(error)
+                std::cout << "ERROR Socket wait: " << error.value() << " - " << error.message() << std::endl;
+        });
         if(--wait == 0)
-            return 0;
+            return false;
     }
-    return 1;
+    return true;
 }
 
 bool Connection::recieve_file() {
@@ -174,17 +191,28 @@ bool Connection::recieve_file() {
 
     if(_sock.available() == 0)
     {
+        if(error)
+        {
+            std::cout << "ERROR: " << error.value() << " - " << error.message() << std::endl;
+            Connection::set_signal(TASK::STATE.ERROR);
+            return false;
+        }
+        std::cout << "Waiting for server transmission" << std::endl;
         if(!wait_for_data())
         {
             std::cout << "ERROR No data on socket" << std::endl;
             Connection::set_signal(TASK::STATE.ERROR);
             return false;
         }
+        else
+        {
+            std::cout << "Waiting for server transmission" << std::endl;
+        }
     }
 
     size_t bytes_read = 0;
 
-    while(_sock.available() != 0)
+    while(true)
     {
         bytes_read += _sock.read_some(boost::asio::buffer(buffer), error);
         if(error)
@@ -203,11 +231,20 @@ bool Connection::recieve_file() {
         }
     }
 
-    output_fs.write(buffer.data(), bytes_read);
-
-    output_fs.close();
-
-    return true;
+    if(bytes_read > 0)
+    {
+        std::cout << bytes_read << " bytes received from server" << std::endl;
+        output_fs.write(buffer.data(), bytes_read);
+        output_fs.close();
+        Connection::set_signal(TASK::STATE.READY);
+        return true;
+    }
+    else
+    {
+        std::cout << "Closing with error" << std::endl;
+        Connection::set_signal(TASK::STATE.ERROR);
+        return false;
+    }
 }
 
 void Connection::set_signal(int state)
@@ -216,8 +253,6 @@ void Connection::set_signal(int state)
     std::lock_guard<std::mutex> name{ mut };
     _task.status = state;
 }
-
-bool Connection::task_complete() { return _task.status == TASK::STATE.READY; }
 
 void Connection::kill()
 {
@@ -228,3 +263,5 @@ void Connection::kill()
 }
 
 const client_request* Connection::task_info() const { return &_task; }
+
+bool Connection::task_complete() { return _task.status == TASK::STATE.READY; }

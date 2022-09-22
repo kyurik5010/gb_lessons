@@ -100,9 +100,9 @@ void F_Server::get_client(ip::tcp::socket&& sock)
 
     std::thread thr(&NewCon::send_file, &*client_operations.back());
 
-    thr.join();
+    thr.detach();
                                                                                      /**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    //F_Server::accept_connection(); // ждать следующее подключение
+    F_Server::accept_connection(); // ждать следующее подключение
 }
 
 void F_Server::set_timer(int new_timer)

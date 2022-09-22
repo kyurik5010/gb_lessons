@@ -39,40 +39,64 @@ _sock(std::make_shared<ip::tcp::socket>(std::move(sock)))                       
 std::string NewCon::get_request()
 {
 
+    std::this_thread::sleep_for(s{1});
+    size_t test;
+    if((test = _sock->available()) == 0)
+    {
+        std::cout << "ERROR No data on socket" << std::endl;
+        return "";
+    }
+    else
+        std::cout << test << " bytes available on socket" << std::endl;
+
     boost::asio::streambuf::mutable_buffers_type bufs = _buffer.prepare(MAX_PATH);
 
-    std::this_thread::sleep_for(s{1});
-
-    if(_sock->available() == 0)
-        std::cout << "ERROR No data on socket" << std::endl;
-
-    size_t bytes_read = 0;
-
-    while(bytes_read != MAX_PATH)
-    {
-        bytes_read += _sock->read_some(boost::asio::buffer(bufs), error);
-        if (error)
+    _sock -> async_receive(bufs,
+        [&](const boost::system::error_code& er, size_t bytes_read)
         {
-            if(error.value() == 2)
+            if (er)
             {
-                std::cout << "End of incoming transmission " << std::endl;
-                break;
+                if(er.value() == 2)
+                {
+                    std::cout << "End of incoming transmission " << std::endl;
+                }
+                else
+                {
+                    std::cout << "ERROR Socket read: " << er.value() << ": " << er.message() << std::endl;
+                    _state = STATE::ERROR;
+                }
             }
-            std::cout << "ERROR Socket read: " << error.value() << ": " << error.message() << std::endl;
-            _state = STATE::ERROR;
-        }
-        else
-        {
-            std::cout << bytes_read << " bytes recieved from client" << std::endl;
-        }
+            else{
+                std::cout << bytes_read << " bytes read from docket" << std::endl;
+
+                _buffer.commit(bytes_read);
+                std::cout << _buffer.in_avail() << " bytes bytes available to read from buffer" << std::endl;
+
+                std::istream i_stream(&_buffer);
+                std::getline(i_stream, _raw_line);
+
+                std::cout << "Client request " << _raw_line << std::endl;
+
+                //NewCon::reinterpret(_raw_line);
+            }
+        });
+
+//    deadline_timer t(_sock->get_executor(), boost::posix_time::seconds(2));
+//    t.async_wait([&](const boost::system::error_code& er){
+//        if(er)
+//            std::cout << "ERROR deadline timer: " << er.value() << " - " << er.message() << std::endl;
+//        else if(_raw_line.empty())
+//            std::cout << "_raw_line still empty" << std::endl;
+//        else
+//            std::cout << _raw_line.length() << " length of _raw_line" << std::endl;
+//    });
+
+    std::this_thread::sleep_for(s{2});
+    if(_raw_line.empty())
+    {
+        std::cout << "_raw_line still empty" << std::endl;
+        std::this_thread::sleep_for(s{2});
     }
-
-    _buffer.commit(bytes_read);
-
-    std::istream i_stream(&_buffer);
-
-    std::getline(i_stream, _raw_line);
-
     return _raw_line;
 }
 
