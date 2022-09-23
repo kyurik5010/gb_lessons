@@ -31,7 +31,7 @@ NewCon::NewCon(io_context &connection, int port, ip::tcp::socket &&sock):
 _state(STATE::RUNNING),
 _keep_alive(true),
 _port(port),
-_sock(std::make_shared<ip::tcp::socket>(std::move(sock)))                                                            // запомнить: сокет нужно передавать с сервера
+_sock(std::make_shared<ip::tcp::socket>(std::move(sock)))
 {
     std::cout << _sock->remote_endpoint().address().to_string() << ":" << _sock->remote_endpoint().port() << " connected!" << std::endl;
 }
@@ -76,20 +76,8 @@ std::string NewCon::get_request()
                 std::getline(i_stream, _raw_line);
 
                 std::cout << "Client request " << _raw_line << std::endl;
-
-                //NewCon::reinterpret(_raw_line);
             }
         });
-
-//    deadline_timer t(_sock->get_executor(), boost::posix_time::seconds(2));
-//    t.async_wait([&](const boost::system::error_code& er){
-//        if(er)
-//            std::cout << "ERROR deadline timer: " << er.value() << " - " << er.message() << std::endl;
-//        else if(_raw_line.empty())
-//            std::cout << "_raw_line still empty" << std::endl;
-//        else
-//            std::cout << _raw_line.length() << " length of _raw_line" << std::endl;
-//    });
 
     std::this_thread::sleep_for(s{2});
     if(_raw_line.empty())
@@ -142,9 +130,9 @@ int NewCon::send_file()
         return 1;
     }
 
-    std::ifstream f_stream(_file_path);
+    std::ifstream input_fs(_file_path, std::istream::binary);
 
-    if (!f_stream)
+    if (!input_fs)
     {
         std::cerr << "ERROR Opening file" << std::endl;
         _state = STATE::ERROR;
@@ -158,50 +146,53 @@ int NewCon::send_file()
     std::cout << "Preparing data for transmission" << std::endl;
 
     char c;
-    while(f_stream)
+    while(input_fs)
     {
         std::vector<char> arr;
-        while (arr.size() < MAX_BUF && !f_stream.eof())
+        while (arr.size() < MAX_BUF && !input_fs.eof())
         {
-            f_stream.get(c);
+            input_fs.get(c);
             arr.push_back(c);
         }
         buffer.push_back(arr);
     }
 
-    size_t bytes_count = 0;
+    size_t bytes_to_send = 0;
 
     for(auto x : buffer)
-        bytes_count += x.size();
+        bytes_to_send += x.size();
 
-    std::cout << buffer.size() << " chunks of data prepared for transmission (" << bytes_count << " bytes)" << std::endl;
+    std::cout << buffer.size() << " chunks of data prepared for transmission (" << bytes_to_send << " bytes)" << std::endl;
 
-    while (bytes_count)
+    _sock ->async_send(boost::asio::buffer(buffer), [&](const boost::system::error_code& er, size_t written_to_socket)
     {
-        size_t bytes_written = 0;
-        bytes_written += _sock->write_some(boost::asio::buffer(buffer), error);
-        if(error)
+        if(er)
         {
-            if(error.value() == 2)
-            {
-                std::cout << "End of outgoing buffer" << std::endl;
-                break;
-            }
+            if (er.value() == 2)
+                std::cout << "End of file" << std::endl;
             else
             {
-                std::cerr << "ERROR Socket send: " << error.value() << " - " << error.message() << std::endl;
+                std::cout << "ERROR async_send: " << er.value() << " - " << er.message() << std::endl;
                 _state = STATE::ERROR;
-                return 1;
             }
         }
         else
-            std::cout << bytes_written << " written to socket" << std::endl;
-        bytes_count -= bytes_written;
+        {
+            std::cout << "Transmission complete: " << written_to_socket <<" bytes written to socket" << std::endl;
+        }
+    });
+
+    if(bytes_to_send == 0)
+    {
+        std::cout << "Waiting for transmission end" << std::endl;
+        std::this_thread::sleep_for(s{4});
+        if (bytes_to_send == 0) {
+            std::cout << "Transmission failure" << std::endl;
+            _state = STATE::ERROR;
+        }
     }
-    if(bytes_count <= 0)
-        _state = STATE::COMPLETE;
     else
-        _state = STATE::ERROR;
+        _state = STATE::COMPLETE;
     return 0;
 }
 

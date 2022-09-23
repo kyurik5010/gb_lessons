@@ -23,6 +23,9 @@
 #define MAX_PATH (256)
 #endif
 
+#ifndef MAX_BUF
+#define MAX_BUF (4096)
+#endif
 
 namespace TASK
 {

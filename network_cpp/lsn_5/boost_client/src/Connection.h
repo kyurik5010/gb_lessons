@@ -34,6 +34,8 @@ public:
 
     bool send_request();         // посылает запрос
 
+    void check_file( std::filesystem::path& );
+
     bool recieve_file();         // получает и сохраняет файл
 
     void set_signal(int);        // устанавливает status в структуре запроса для сигнализирования об окончании работы соединения
