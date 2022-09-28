@@ -18,10 +18,10 @@ private:
     boost::asio::ip::tcp::socket _sock;
     std::shared_ptr<boost::asio::io_context> _io;
     client_request _task;
-    struct __session{
-        size_t total_bytes = 0;
-        bool run;
-    }_session;
+//    struct __session{
+//        size_t total_bytes = 0;
+//        bool run;
+//    }_session;
 
 public:
     Connection(client_request&&, std::shared_ptr<boost::asio::io_context> context);
@@ -35,6 +35,7 @@ public:
     bool send_request();         // посылает запрос
 
     void check_file( std::filesystem::path& );
+
 
     bool recieve_file();         // получает и сохраняет файл
 

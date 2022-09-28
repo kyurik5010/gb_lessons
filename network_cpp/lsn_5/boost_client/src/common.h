@@ -6,6 +6,8 @@
 #ifndef BOOST_CLIENT_COMMON_H
 #define BOOST_CLIENT_COMMON_H
 
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <filesystem>
@@ -27,14 +29,11 @@
 #define MAX_BUF (4096)
 #endif
 
-namespace TASK
+namespace STATE
 {
-    static union state
-    {
-        int READY = 0;                   // задача выполнена
-        int ERROR;                   // ошибка
-        int BUSY;                    // задача в работе
-    }STATE;
+    static const int READY = 0;                  // задача выполнена
+    static const int ERROR = 1;                  // ошибка
+    static const int BUSY  = 2;                  // задача в работе
 }
 
 

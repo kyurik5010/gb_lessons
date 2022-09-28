@@ -139,32 +139,17 @@ int NewCon::send_file()
         return 1;
     }
 
+    std::string bufr;
+
+    std::getline(input_fs, bufr);
+
+    size_t bytes_to_send = bufr.length();
+
     std::cout << "Sending file " << _file_path << "..." << std::endl;
 
-    std::vector<std::vector<char>> buffer;
+    std::cout << bufr << " prepared for transmission (" << bytes_to_send << " bytes)" << std::endl; // размер показывает корректный
 
-    std::cout << "Preparing data for transmission" << std::endl;
-
-    char c;
-    while(input_fs)
-    {
-        std::vector<char> arr;
-        while (arr.size() < MAX_BUF && !input_fs.eof())
-        {
-            input_fs.get(c);
-            arr.push_back(c);
-        }
-        buffer.push_back(arr);
-    }
-
-    size_t bytes_to_send = 0;
-
-    for(auto x : buffer)
-        bytes_to_send += x.size();
-
-    std::cout << buffer.size() << " chunks of data prepared for transmission (" << bytes_to_send << " bytes)" << std::endl;
-
-    _sock ->async_send(boost::asio::buffer(buffer), [&](const boost::system::error_code& er, size_t written_to_socket)
+    _sock ->async_send(boost::asio::buffer(bufr), [&](const boost::system::error_code& er, size_t written_to_socket)
     {
         if(er)
         {
@@ -178,15 +163,18 @@ int NewCon::send_file()
         }
         else
         {
+            bytes_to_send -= written_to_socket;
             std::cout << "Transmission complete: " << written_to_socket <<" bytes written to socket" << std::endl;
+            input_fs.close();
         }
     });
 
-    if(bytes_to_send == 0)
+
+    if(bytes_to_send != 0)
     {
         std::cout << "Waiting for transmission end" << std::endl;
         std::this_thread::sleep_for(s{4});
-        if (bytes_to_send == 0) {
+        if (bytes_to_send != 0) {
             std::cout << "Transmission failure" << std::endl;
             _state = STATE::ERROR;
         }

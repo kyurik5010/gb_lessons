@@ -19,11 +19,11 @@ int main(int argc, const char *argv[]){
     std::cout << "===============================| dummy.txt |===============================" << std::endl;
     client.get_file("dummy.txt");
 
-//    std::cout << "============================| nonexistent.txt |============================" << std::endl;
-//    client.get_file("nonexistent.txt");
-//
-//    std::cout << "==============================| dummy2.txt |===============================" << std::endl;
-//    client.get_file("dummy2.txt");
+    std::cout << "============================| nonexistent.txt |============================" << std::endl;
+    client.get_file("nonexistent.txt");
+
+    std::cout << "==============================| dummy2.txt |===============================" << std::endl;
+    client.get_file("dummy2.txt");
 
     while(run)
     {

@@ -1,7 +1,3 @@
-//
-//
-// еще доделываю, надеюсь сегодня успеть
-
 #include "Client.h"
 
 #include <utility>
@@ -62,12 +58,12 @@ bool Client::check_tasks()
 
     for(int i=0; i<_tasks.size(); ++i)
     {
-        if (_tasks[i]->task_info()->status == TASK::STATE.READY)
+        if (_tasks[i]->task_info()->status == STATE::READY)
         {
             std::cout << "'" << _tasks[i]->task_info()->cr_file_name << "' download complete" << std::endl;
             Client::pop_task(i);
         }
-        else if (_tasks[i]->task_info()->status == TASK::STATE.ERROR)
+        else if (_tasks[i]->task_info()->status == STATE::ERROR)
         {
             std::cout << "Task '" << _tasks[i]->task_info()->cr_file_name << "' incomplete do to error" << std::endl;
             Client::pop_task(i);
@@ -106,7 +102,7 @@ bool Client::check_path(std::string& file_path)
     fs::path check = fs::weakly_canonical(file_path);
     if (! (fs::exists(check) && fs::is_regular_file(check)) )
     {
-        std::cerr << "ERROR: invalid path '" << file_path << "'" << std::endl;  //проверка на ошибки в Client::get_file()
+        std::cout << "ERROR: invalid path '" << file_path << "'" << std::endl;  //проверка на ошибки в Client::get_file()
         return false;
     }
     return true;
@@ -120,8 +116,8 @@ int Client::push_task()
     task.cr_ip_address = _server_ip;
     task.cr_file_name = _file_name;
     task.cr_path = _file_path;
-    task.cr_download = _download_path;
-    task.status = TASK::STATE.BUSY;
+    task.cr_download = _download_path + '/' + _file_name;
+    task.status = STATE::BUSY;
     task.keep_connection = true;
 
     _tasks.emplace_back(std::make_shared<Connection>(std::move(task), _io));
