@@ -1,6 +1,3 @@
-//
-// Created by Юрий Михайлович on 13.09.2022.
-//
 
 #ifndef BOOST_SERVER_INTERFACE_H
 #define BOOST_SERVER_INTERFACE_H
