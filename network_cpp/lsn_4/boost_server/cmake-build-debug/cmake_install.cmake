@@ -1,4 +1,4 @@
-# Install script for directory: /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server
+# Install script for directory: /Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

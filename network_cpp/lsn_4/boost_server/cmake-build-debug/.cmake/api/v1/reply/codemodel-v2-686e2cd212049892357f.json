@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "boost_server::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-boost_server-Debug-40902db1f453d632210e.json",
-					"name" : "boost_server",
+					"id" : "serv::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-serv-Debug-7aee5dcbf5f7a03f6a60.json",
+					"name" : "serv",
 					"projectIndex" : 0
 				}
 			]
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug",
-		"source" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server"
+		"build" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server/cmake-build-debug",
+		"source" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server"
 	},
 	"version" : 
 	{

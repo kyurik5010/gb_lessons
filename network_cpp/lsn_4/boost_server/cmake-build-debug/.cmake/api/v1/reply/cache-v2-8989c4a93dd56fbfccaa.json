@@ -83,7 +83,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug"
+			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -543,7 +543,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server"
+			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1118,42 +1118,6 @@
 			"value" : "[/usr/local/lib/cmake/Boost-1.79.0/BoostConfig.cmake][c ][v1.79.0()]"
 		},
 		{
-			"name" : "Project_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug"
-		},
-		{
-			"name" : "Project_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Project_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server"
-		},
-		{
 			"name" : "boost_headers_DIR",
 			"properties" : 
 			[
@@ -1179,7 +1143,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/cmake-build-debug"
+			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server/cmake-build-debug"
 		},
 		{
 			"name" : "boost_server_IS_TOP_LEVEL",
@@ -1203,7 +1167,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server"
+			"value" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server"
 		}
 	],
 	"kind" : "cache",

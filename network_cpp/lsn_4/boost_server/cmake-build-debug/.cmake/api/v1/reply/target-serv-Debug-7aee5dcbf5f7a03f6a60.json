@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "boost_server"
+			"path" : "serv"
 		}
 	],
 	"backtrace" : 1,
@@ -63,7 +63,7 @@
 				},
 				{
 					"backtrace" : 3,
-					"path" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_4/boost_server/src"
+					"path" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_5/boost_server/src"
 				}
 			],
 			"language" : "CXX",
@@ -84,7 +84,7 @@
 			]
 		}
 	],
-	"id" : "boost_server::@6890427a1f51a3e7e1df",
+	"id" : "serv::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -100,8 +100,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "boost_server",
-	"nameOnDisk" : "boost_server",
+	"name" : "serv",
+	"nameOnDisk" : "serv",
 	"paths" : 
 	{
 		"build" : ".",

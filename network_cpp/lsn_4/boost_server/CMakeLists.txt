@@ -14,5 +14,5 @@ set(Source src/interface.cpp
         src/connection.cpp
         )
 
-add_executable(boost_server main.cpp ${Source})
-target_include_directories(boost_server PUBLIC src)
+add_executable(serv main.cpp ${Source})
+target_include_directories(serv PUBLIC src)

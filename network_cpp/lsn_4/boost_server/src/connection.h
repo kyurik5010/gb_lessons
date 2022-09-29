@@ -2,16 +2,7 @@
 #define BOOST_SERVER_CONNECTION_H
 
 #pragma once
-
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <optional>
-#include <array>
-#include <filesystem>
-#include <fstream>
-#include <boost/asio.hpp>
-#include <boost/system/error_code.hpp>
+#include "common.h"
 
 
 using namespace boost::asio;
@@ -20,8 +11,17 @@ namespace FS = std::filesystem;
 class NewCon
 {
 private:
+    std::shared_ptr<ip::tcp::socket> _sock;
+    int _port;
+    boost::system::error_code error;
+
+    int _state;
+    bool _keep_alive;
+
     FS::path _file_path;
-    ip::tcp::socket _client;
+    std::string _raw_line;
+    boost::asio::streambuf _buffer;
+
 public:
     std::string get_request();                                      // получить сырой путь
 
@@ -29,8 +29,10 @@ public:
 
     int send_file();                                               // отправить файл
 
-    explicit NewCon(io_context &connection);
+    explicit NewCon(io_context &connection, int port, ip::tcp::socket &&sock);
 
+    int get_connection_state() const;
+    void set_connection_state(int);
     ~NewCon();
 };
 
