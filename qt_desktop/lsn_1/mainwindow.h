@@ -29,6 +29,8 @@ private slots:
 
     void on_tsk3_copy_clicked();
 
+    void on_tsk3_random_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

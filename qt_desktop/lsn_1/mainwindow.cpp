@@ -93,21 +93,16 @@ void MainWindow::on_tsk2_compute_clicked()
 
 }
 //____________________________Задание 3________________________________
-/**
-3. Создать программу, разместить два виджета QPlainTextEdit. Добавить две кнопки:
-первая кнопка будет добавлять текст из одного текстового виджета в другой,
-вторая кнопка - заменять текст в одном виджете на текст в другом виджете.
-Добавить третью кнопку, которая вставляет в один из текстовых виджетов текст
-произвольного html-кода, например <font color='red'>Hello</font>
-(используйте метод setHtml(QString) ).
-*/
 
 void MainWindow::on_tsk3_add_clicked()
 {
     QString text1 = ui->tsk3_PT_1->toPlainText();
     QString text2 = ui->tsk3_PT_2->toPlainText();
 
-    text2 += "\n" + text1;
+    if(text2 == "")
+        text2 += text1;
+    else
+        text2 += "\n" + text1;
 
     ui->tsk3_PT_1->clear();
     ui->tsk3_PT_2->setPlainText(text2);
@@ -122,5 +117,16 @@ void MainWindow::on_tsk3_copy_clicked()
     text2 = text1;
 
     ui->tsk3_PT_2->setPlainText(text2);
+}
+
+
+
+void MainWindow::on_tsk3_random_clicked()
+{
+
+    QString doc = "<font color='green'>Вжух!</font>";
+
+    ui->tsk3_PT_2->appendHtml(doc);
+
 }
 
