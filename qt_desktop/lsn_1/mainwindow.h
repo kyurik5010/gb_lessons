@@ -25,6 +25,10 @@ private slots:
 
     void on_tsk2_compute_clicked();
 
+    void on_tsk3_add_clicked();
+
+    void on_tsk3_copy_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

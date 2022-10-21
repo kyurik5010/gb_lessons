@@ -6,6 +6,7 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tsk3_PT_2->setReadOnly(true);
 }
 
 MainWindow::~MainWindow()
@@ -79,7 +80,7 @@ void MainWindow::on_tsk2_compute_clicked()
     double x = ui->tsk2_angle_TB->text().toDouble();
     int a = ui->tsk2_A_TB->text().toInt();
     int b = ui->tsk2_B_TB->text().toInt();
-    if(ui->tsk2_deg_RB_2->isChecked()) // если включены радианы - перевести в градусы (1 радиана == 57.2958 градусов)
+    if(ui->tsk2_deg_RB_2->isChecked())
     {
         x *= 57.2958;
         std::cout << "Угол в градусах: " << x << std::endl;
@@ -90,5 +91,36 @@ void MainWindow::on_tsk2_compute_clicked()
     std::cout << "Результат: " << c << std::endl;
     ui->tsk2_res_TB->setText(QString::number(c, 'g', 2));
 
+}
+//____________________________Задание 3________________________________
+/**
+3. Создать программу, разместить два виджета QPlainTextEdit. Добавить две кнопки:
+первая кнопка будет добавлять текст из одного текстового виджета в другой,
+вторая кнопка - заменять текст в одном виджете на текст в другом виджете.
+Добавить третью кнопку, которая вставляет в один из текстовых виджетов текст
+произвольного html-кода, например <font color='red'>Hello</font>
+(используйте метод setHtml(QString) ).
+*/
+
+void MainWindow::on_tsk3_add_clicked()
+{
+    QString text1 = ui->tsk3_PT_1->toPlainText();
+    QString text2 = ui->tsk3_PT_2->toPlainText();
+
+    text2 += "\n" + text1;
+
+    ui->tsk3_PT_1->clear();
+    ui->tsk3_PT_2->setPlainText(text2);
+}
+
+
+void MainWindow::on_tsk3_copy_clicked()
+{
+    QString text1 = ui->tsk3_PT_1->toPlainText();
+    QString text2 = ui->tsk3_PT_2->toPlainText();
+
+    text2 = text1;
+
+    ui->tsk3_PT_2->setPlainText(text2);
 }
 
