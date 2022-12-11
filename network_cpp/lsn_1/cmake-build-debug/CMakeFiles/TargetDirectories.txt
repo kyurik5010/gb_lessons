@@ -1,7 +1,3 @@
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/l1/CMakeFiles/rebuild_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/l1/CMakeFiles/edit_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/l1/udp_server/CMakeFiles/rebuild_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/l1/udp_server/CMakeFiles/edit_cache.dir
-/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug/l1/udp_server/CMakeFiles/udp-server.dir
+/Users/urijmihajlovic/CLionProjects/CPP_networks_lsn1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/urijmihajlovic/CLionProjects/CPP_networks_lsn1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/urijmihajlovic/CLionProjects/CPP_networks_lsn1/cmake-build-debug/CMakeFiles/udp-server.dir

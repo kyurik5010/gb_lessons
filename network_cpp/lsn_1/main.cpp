@@ -17,7 +17,7 @@
 // Trim from end (in place).
 static inline std::string& rtrim(std::string& s)
 {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](int c) { return !std::isspace(c); }).base());
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int c){return !std::isspace(c);}).base());
     return s;
 }
 
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    const int port { std::stoi(argv[1]) };
+    const int port = std::stoi(argv[1]);
 
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -77,15 +77,14 @@ int main(int argc, char const *argv[])
 
     while (run)
     {
-        // Read content into buffer from an incoming client.
         recv_len = recvfrom(sock, buffer, sizeof(buffer) - 1, 0,
                             reinterpret_cast<sockaddr *>(&client_address),
                             &client_address_len);
-
+        
         if(getnameinfo(reinterpret_cast<sockaddr*>(&client_address), client_address_len, client_name_buf,
                        sizeof(client_name_buf), serv_name_buf, sizeof(serv_name_buf), 0) != status)
         {
-            std::cout << "HOST_NAME_RESOLVE_ERROR\n";
+            std::cout << "ERROR resolving host name\n";
         }
 //const char *inet_ntop(int af, const void *restrict src, char *restrict dst, socklen_t size);
 

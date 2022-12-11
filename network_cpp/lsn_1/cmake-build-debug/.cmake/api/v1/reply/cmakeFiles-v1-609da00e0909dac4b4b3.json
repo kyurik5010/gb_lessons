@@ -145,19 +145,13 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake"
-		},
-		{
-			"path" : "l1/CMakeLists.txt"
-		},
-		{
-			"path" : "l1/udp_server/CMakeLists.txt"
 		}
 	],
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1/cmake-build-debug",
-		"source" : "/Users/urijmihajlovic/gb_lessons/network_cpp/lsn_1"
+		"build" : "/Users/urijmihajlovic/CLionProjects/CPP_networks_lsn1/cmake-build-debug",
+		"source" : "/Users/urijmihajlovic/CLionProjects/CPP_networks_lsn1"
 	},
 	"version" : 
 	{

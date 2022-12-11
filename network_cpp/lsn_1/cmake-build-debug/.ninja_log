@@ -1,3 +1,3 @@
 # ninja log v5
-3	1815	1660084873860123028	l1/udp_server/CMakeFiles/udp-server.dir/main.cpp.o	27a10568d5b2a55
-1816	1993	1660084874044553262	bin/udp-server	250fe87d96fc4798
+0	2085	1670773978913658493	CMakeFiles/udp-server.dir/main.cpp.o	826b3bbd6ec33db0
+2089	2336	1670773979166631412	udp-server	cb87d2995b1cf35c

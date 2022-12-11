@@ -1,0 +1,57 @@
+<<whois 46.229.175.90>>
+% IANA WHOIS server
+% for more information on IANA, visit http://www.iana.org
+% This query returned 1 object
+
+refer:        whois.ripe.net
+
+inetnum:      46.0.0.0 - 46.255.255.255
+organisation: RIPE NCC
+status:       ALLOCATED
+
+whois:        whois.ripe.net
+
+changed:      2009-09
+source:       IANA
+
+# whois.ripe.net
+
+inetnum:        46.229.174.0 - 46.229.175.255
+netname:        ADVANCEDHOSTERS-NET
+descr:          Advanced Hosters B.V.
+country:        US
+admin-c:        AH36-RIPE
+tech-c:         AH36-RIPE
+status:         ASSIGNED PA
+remarks:        Send abuse reports to abuse@advancedhosters.com
+mnt-by:         ADVANCEDHOSTERS-MNT
+mnt-lower:      ADVANCEDHOSTERS-MNT
+mnt-routes:     ADVANCEDHOSTERS-MNT
+created:        2013-02-06T13:49:55Z
+last-modified:  2015-03-31T08:16:18Z
+source:         RIPE
+
+role:           Advanced Hosters B.V.
+address:        Ganzenstraat 1
+address:        3815 JA, Amersfoort, Nederland
+org:            ORG-AH11-RIPE
+abuse-mailbox:  abuse@advancedhosters.com
+nic-hdl:        AH36-RIPE
+mnt-by:         ADVANCEDHOSTERS-MNT
+created:        2009-03-31T09:52:43Z
+last-modified:  2015-03-19T12:49:43Z
+source:         RIPE # Filtered
+
+% Information related to '46.229.160.0/20AS39572'
+
+route:          46.229.160.0/20
+descr:          Hosting segment
+origin:         AS39572
+mnt-by:         ADVANCEDHOSTERS-MNT
+created:        2011-03-10T10:07:32Z
+last-modified:  2011-03-10T10:07:32Z
+source:         RIPE
+
+% This query was served by the RIPE Database Query Service version 1.104 (WAGYU)
+
+
