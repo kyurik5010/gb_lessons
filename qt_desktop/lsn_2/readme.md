@@ -41,6 +41,15 @@ ui->lineEdit->serValidator(new QintValidator(ui->lineEdit))
 представление - визуальное представление модели -> виджеты отображающие эти 
 данные
 
+Объяснение от ChatGPT:
+The Model-View-Controller (MVC) concept is a software design pattern used to separate the 
+data layer (model) from the user interface layer (view) in a software application. Qt is an 
+application framework that uses the MVC concept to create user interfaces. In Qt, the model 
+is responsible for managing and storing data, while the view is responsible for displaying 
+the data. The controller is responsible for handling user input and connecting the model and 
+view layers. The controller also handles communication between the model and view layers, 
+allowing them to interact with each other.
+
 *) приведенные примеры:
 
 парсинг текста с арифметическими выражениями,
