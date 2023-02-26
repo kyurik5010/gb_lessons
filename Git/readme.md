@@ -1,7 +1,8 @@
-                                          Notes
-                                          =====
+Notes
+-----
 
-You can press 'cmd'+'a' to skip to the beggining of the line in Nano and 'cmd'+'e' to skip 
+You can press ''cmd'+'a'' to skip to the beggining of the line in Nano and ''cmd'+'e'' to 
+skip 
 tp the end of the line.
 
 You can make a new line in Github readme.md files by using two trailing spaces at the end of 
