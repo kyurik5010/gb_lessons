@@ -1,13 +1,13 @@
 Notes
 -----
 
-You can press #'cmd'+'a'# to skip to the beggining of the line in Nano and #'cmd'+'e'# to 
+You can press `cmd + a` to skip to the beggining of the line in Nano and `cmd + e ` to 
 skip to the end of the line.
 
 You can make a new line in Github readme.md files by using two trailing spaces at the end of 
 a line and then pressing enter. This will create a new line without creating a new 
 paragraph.  
-#"your line of text" 'space' 'space' 'enter'#
+`"your line of text" 'space' 'space' 'enter'`
 
 To create comments in Markdown You can use a combination of HTML 
 comment tags and Markdown syntax, such as:
