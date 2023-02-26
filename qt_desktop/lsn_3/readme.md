@@ -50,8 +50,7 @@ foreach(QFileInfo item, list)
 открыть, закрыть, создавать и читать файлы  
 
     
-	//This code opens a file called "myfile.txt" in write-only mode and writes the 
-contents of a plain text edit box to the file.   
+	//This code opens a file called "myfile.txt" in write-only mode and writes the contents of a plain text edit box to the file.   
 	QFile myFile("./myfile.txt"); //Create QFile object to open the file  
 	
 	//Check if the file is opened in write-only mode  
@@ -71,7 +70,7 @@ contents of a plain text edit box to the file.
 	}   
     
 	
-	еще вариант использовать QTextStream вместо ByteArray:  
+	//еще вариант использовать QTextStream вместо ByteArray:  
 
         // Create a QTextStream object to write to the file  
         QTextStream out(&myFile);  
