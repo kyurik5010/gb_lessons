@@ -13,3 +13,8 @@
 
 5) н
 
+
+Классы Qt
+=========
+
+![](https://ru.opensuse.org/images/3/34/Qtclasses.png)
