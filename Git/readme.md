@@ -4,9 +4,17 @@ tp the end of the line.
 You can make a new line in Github readme.md files by using two trailing spaces at the end of 
 a line and then pressing enter. This will create a new line without creating a new 
 paragraph.  
-'<!-- "your line of text" 'space' 'space' 'enter' -->'
+<!-- "your line of text" 'space' 'space' 'enter' -->
 
-In Markdown, comments are created using HTML comment tags: `<!-- Comment -->`.
+To create comments in Markdown You can use a combination of HTML 
+comment tags and Markdown syntax, such as:
+
+`[//]: # (Comment)`
+
+You can also use a special comment syntax specific to Markdown parsers like GitHub Flavored 
+Markdown (GFM):
+
+`<!-- GFM-TASK: Comment -->`
 
 You can place images in a readme.md file for GitHub.  
 To do so, you need to use the Markdown syntax and  
