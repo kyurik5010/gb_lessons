@@ -38,15 +38,15 @@ __Метаобъектная информация__ (`Q_PROPERTY`, `Q_OBJECT`, `
 ---------------------
 `(00.14.16)` - Умные указатели в Qt  
 
-<pre><code>
-#include <QSharedPointer>
+<pre><code>#include <QSharedPointer>
+    
     QSharedPointer<MyClass> obg(new MyClass());
 //либо:
     obj = QSharedPointer<QObject>::create() //более безопасный вариант
 </pre></code>
 Также в любой момент можно выделить память под новый экземпляр объекта — удалить текущий, 
 вызвав функцию 'reset'.
-<pre><code>    obg.reset(new MyClass(this));</pre></code>
+<pre><code>    obj.reset(new MyClass(this));</pre></code>
 
 3) Сигналы и слоты
 ------------------
@@ -124,7 +124,7 @@ connect(prevPicButton, SIGNAL(clicked()), this, SLOT(prevPicture()));
 
 //еще вариант:
 connect(this, &MainWindow::MySignal(int), this, &MainWindow::MySlot(int));
-//позволяет ловить ошибки на этапе компилляции
+//позволяет ловить ошибки на этапе компиляции
 </pre></code>
 
 Для определения вызывающего сигнала используется функция `sender()`, возвращающая указатель 
@@ -151,4 +151,168 @@ C++, сгенерированный moc, должен компилироват
 класса.
 
 ![](https://fuzeservers.ru/wp-content/uploads/8/7/9/8790c2cd5ecf92b8deb6c42395a43608.jpeg)  
+
+__6) Пример кода с прописанными кнопками и привязкой к слотам__  
+---------------------------------------------------------------
+`1.32.00`  
+<pre><code>
+#include <QPushButton>
+QPushButton *nextPicButton, *prevPicButton;
+nextPicButton = new QPushButton(this);
+prevPicButton = new QPushButton(this);
+nextPicButton->move(695, 600 - 30); // перемещение по x y
+prevPicButton->move(5, 600 - 30);
+nextPicButton->setText("Следующия"); 
+prevPicButton->setText("Предыдущая");
+connect(nextPicButton, SIGNAL(clicked()), this, SLOT(nextPicture())); 
+connect(prevPicButton, SIGNAL(clicked()), this, SLOT(prevPicture()));
+</pre></code>
+
+__7) Обработка событий__
+------------------------
+
+<pre><code>
+include <QMouseEvent>
+include <QKeyEvent>
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
+
+    int posCursor;
+
+void Mainwindow::keyReleaseEvent(QMouseEvent *event)
+{
+    if(event->ley() == Qt::Key_Left)
+    {
+        qDebug() << "left key pressed";
+    }
+}
+
+void Mainwindow::mousePressEvent(QMouseEvent *event)
+{
+    posCursor = event->x();
+}
+
+void Mainwindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    int x = event->x();
+    if(x > posCursor)
+    {
+        qDebug() << "move right";
+    }
+    else if(x < posCursor)
+    {
+        qDebug() << "move left";
+    }
+}
+</pre></code>
+
+8) Фильтры событий
+------------------
+
+	Иногда возникает необходимость перехватить событие другого объекта. Например, диалоговым 
+окнам обычно необходимо фильтровать нажатия клавиш для некоторых виджетов, например для 
+изменения поведения клавиши Отмена.  
+	Функция `QObject::installEventFilter()` предоставляет возможность реализации такого фильтра. 
+Также фильтр можно легко отключить, используя метод `QObject::removeEventFilter()`.
+
+8) Перевод приложения
+---------------------
+
+`1.58.26`  
+
+	Для реализации перевода программы в Qt нужно, чтобы все строки программы при использовании 
+предварительно передавались в метод `tr`, т.е. вместо кода `QString text = “Hello”;` нужно 
+использовать: `QString text = tr(“Hello”)`.  
+
+	Помимо прочего, в файл __pro__ необходимо добавить следующие строки:
+<pre><code>
+TRANSLATIONS += QtLanguage_ru.ts QtLanguage_ja.ts 
+CODECFORSRC = UTF-8
+</pre></code>
+
+	С помощью консоли или терминала компилятора перейдем к рабочему каталогу проекта и вводим 
+команду `lupdate *.pro`.
+	Перейдем к переводу текста с помощью программы Qt Linquist, которая входит в пакет установки 
+фреймворка Qt.  
+	В нижней части экрана осуществляется сам перевод, а также размещается поле для комментария к 
+переводу. После введения перевода сохраняем изменения. Когда перевод окончен, __нажимаем на 
+вопросительный знак__ напротив исходного текста, сообщая о завершении перевода. Далее в меню 
+__Файл__ выбираем __Скомпилировать__. В каталоге проекта появятся файлы переводов с 
+расширением __qm__.  
+	Копируем эти файлы в теневой каталог сборки. Следующим шагом необходимо __загрузить__ файл перевода с помощью методов класса `QTranslater` и `QApplication`. Это методы загрузки файла 
+локализации и установки текущего перевода программы.
+<pre><code>
+int main(int argc, char *argv[]) {
+QApplication a(argc, argv);
+QTranslator translator;
+translator.load("./QtLanguage_" + QLocale::system().name()); 
+//translator.load("./QtLanguage_ja"); // переключить на японский 
+a.installTranslator(&translator); QResource::registerResource("./resmy.rcc");
+MainWindow w;
+w.resize(800, 600); // сделаем окно больше w.show();
+return a.exec();
+}
+</pre></code>  
+
+	Статический метод `system()` класса __QLocale__ представляет информацию о текущем языке ОС.  
+
+
+10) Обращение к командной строке из программы
+---------------------------------------------
+
+	Программа может выполнять команды терминала ОС. Такие действия, как копирование и 
+перемещение, можно выполнить стандартной командой __cmd__ или __POSIX__.  
+<pre><code>
+system("calc");               // Запуск калькулятора в ОС Windows 
+system("sudo reboot");        // Перезагрузить ПК ОС семейства Linux 
+system("gcc main.c -o soft"); // Скомпилировать проект на языке Си
+                              // в UNIX-подобной ОС
+</pre></code>  
+
+	Другой вариант — использовать класс __QProcess__. Он позволяет получать сообщения, 
+которые выводятся в консоли. У объекта `QProcess` есть интересный сигнал 
+`readyReadStandardOutput`, который генерируется при получении сообщения.
+<pre><code>
+//в заголовочном
+private slots:
+    void on_pushButton_clicked(); void procCMD();
+
+private:
+    QProcess *proc;
+
+//в конструкторе реализуемого класса:
+	proc = new QProcess(this);
+	connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(procCMD()));
+}
+
+void MainWindow::on_pushButton_clicked() 
+{
+    QString cmd = "";
+    if (QSysInfo::productType() == "windows") 
+    {
+         cmd = "cmd /C "; 
+    }
+    cmd += ui->lineEdit->text();
+    proc->start(cmd); 
+
+}
+void MainWindow::procCMD() 
+{
+    QTextCodec *codec = QTextCodec::codecForName("IBM866");
+    ui->plainTextEdit->appendPlainText(codec->toUnicode(proc->readAllStandardOutput( )));
+}
+</pre></code>
+
+Дополнительные материалы
+------------------------
+1. http://doc.crossplatform.ru/qt/4.5.0/signalsandslots.html.
+2. https://doc.qt.io/qt-5/qobject.html#installEventFilter.
+3. https://doc.qt.io/qt-5/eventsandfilters.html.
+4. Qaru: 
+http://qaru.site/questions/1262729/my-qt-eventfilter-doesnt-stop-events-as-it-should.
 
