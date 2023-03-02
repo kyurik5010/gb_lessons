@@ -53,14 +53,49 @@ __QOpenGLFunctions__
 `void initializeGL() override;`, `void resizeGL(int, int) override;` и `void paintGL() 
 override;`. (`00.24:50`)
 
-`Qt::GlobalColor` - enum с перечислением цветов палитры Qt;  
-`qglClearColor(Qt::GlobalColor::black)` - устанавливает цвет для очистки буфера 
-изображения;  
-`glMatrixMode(GL_POJECTION)` - устанавливает матрицу проецирования;  
-`glLoadIdentity()` - function used in OpenGL to reset the current matrix to its default 
-state. It replaces the current matrix with the identity matrix, which is a matrix with all 
-elements set to 0, except for the elements on the main diagonal, which are set to 1. This 
-effectively resets any transformations that have been applied to the current matrix.  
+`initializeGL()` для инициализации контекста OpenGL и настройки параметров отображения. Эта 
+функция вызывается один раз при создании виджета и должна содержать все необходимые команды 
+OpenGL для настройки контекста, включая выбор версии OpenGL, установку параметров 
+сглаживания, задание цвета фона и настройку освещения. Функция initializeGL() является 
+обязательной для реализации при создании приложений с использованием Qt и OpenGL.
+
+resizeGL() используется в OpenGL для изменения размеров окна вывода. Она вызывается каждый 
+раз, когда размер окна изменяется, и позволяет обновить параметры проекции, такие как 
+соотношение сторон и угол обзора. Внутри функции resizeGL() можно задать новые параметры 
+проекции и перерисовать сцену с новыми размерами.
+
+`paintGL()` используется для отрисовки содержимого виджета с помощью команд OpenGL. 
+Эта функция вызывается каждый раз, когда виджет нужно перерисовать, например, при первом 
+показе, изменении размера или когда он был закрыт и затем открыт повторно. Функция paintGL() 
+должна содержать все необходимые команды OpenGL для визуализации сцены, включая установку 
+матриц проекции и моделирования, определение геометрии объектов и применение текстур и 
+освещения. Это важная функция для создания интерактивных 3D-графических приложений с 
+использованием Qt и OpenGL.
+
+`Qt::GlobalColor` - перечисление, которое содержит предопределенные цвета в Qt;  
+
+`qglClearColor(Qt::GlobalColor::black)` - используется в библиотеке Qt для установки цвета 
+очистки буфера изображения в OpenGL. Она принимает четыре параметра: значения красного, 
+зеленого, синего и альфа-каналов, которые задают цвет очистки в формате RGBA. При вызове 
+этой функции OpenGL сохраняет установленный цвет очистки в своем контексте, и при каждом 
+вызове функции glClear() для очистки буфера изображения будет использоваться заданный цвет. 
+Это позволяет установить фоновый цвет для сцены, которая будет отображаться на экране;  
+  
+`glMatrixMode(GL_PROJECTION)` - используется в OpenGL для указания, какой стек матриц 
+является целевым для последующих операций с матрицами. Существует три возможных режима 
+матриц: `GL_MODELVIEW`, `GL_PROJECTION` и `GL_TEXTURE`. Стек матриц __GL_MODELVIEW__ 
+используется для преобразования объектов из пространства модели в пространство мира, а стек матриц 
+__GL_PROJECTION__ используется для выполнения перспективной проекции. Стек матриц 
+__GL_TEXTURE__ используется для преобразования координат текстуры. Вызов `glMatrixMode()` с 
+одним из этих режимов в качестве аргумента позволяет последующим вызовам функций, таких как 
+`glLoadIdentity()`, `glTranslate()`, `glRotate()` и `glScale()`, воздействовать на 
+соответствующий стек матриц.;  
+
+`glLoadIdentity()` - function used in OpenGL to reset the current matrix to its __default 
+state__. It replaces the current matrix with the identity matrix, which is a matrix awith 
+all elements set to `0`, __except__ for the elements on the main diagonal, which are set to 
+`1`. This effectively resets any transformations that have been applied to the current matrix.  
+
 `glViewport(0,0,(GLint)w,(GLint)h)` - "устанавливает видовое окно", используется в OpenGL 
 для определения области экрана, где будет происходить рендеринг. Она принимает __четыре__ 
 параметра: координаты `x` и `y` __нижнего левого__ угла области просмотра, а также `ширину` 
@@ -71,6 +106,53 @@ effectively resets any transformations that have been applied to the current mat
 проекции. Она принимает шесть параметров, которые определяют область видимости, и 
 используется для трансформации графического объекта в экранные координаты. Она часто 
 используется совместно с glViewport(), чтобы установить область видимости для рендеринга.  
+<pre><code>
+void glOrtho(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble nearVal, 
+GLdouble farVal);
 
+- left: координата левой границы видимости.
+- right: координата правой границы видимости.
+- bottom: координата нижней границы видимости.
+- top: координата верхней границы видимости.
+- nearVal: расстояние до ближайшей плоскости отсечения.
+- farVal: расстояние до дальней плоскости отсечения.
+</pre></code>
 
-Система координат 
+`glClear()` используется в OpenGL для очистки буфера изображения. Она вызывается для 
+удаления предыдущего изображения и подготовки буфера для новой отрисовки. Внутри функции 
+glClear() можно задать параметры очистки, такие как цвет и глубину.  
+API: void glClear(GLbitfield mask);
+<pre><code>
+//Параметры:
+
+- mask: битовая маска, которая указывает, какие буферы нужно очистить. Может быть 
+комбинацией следующих значений:
+  - GL_COLOR_BUFFER_BIT: очистить буфер цвета
+  - GL_DEPTH_BUFFER_BIT: очистить буфер глубины
+  - GL_STENCIL_BUFFER_BIT: очистить буфер трафарета
+
+Пример использования:
+
+// Очистить буфер цвета и глубины
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+</pre></code>
+
+'glBegin()' - функция в OpenGL, которая начинает определение графического примитива, 
+такого как точка, линия или треугольник. Если верить ChatGPT:
+<pre><code>
+glBegin() is a legacy function that has been deprecated in modern versions of OpenGL. It is 
+no longer supported and should not be used in new code. Instead, you should use more modern 
+approaches such as Vertex Buffer Objects (VBOs) or Vertex Array Objects (VAOs). These 
+provide better performance and are more flexible than the old glBegin() function.  
+</pre></code> 
+
+Функция `glEnd()` в OpenGL используется для завершения определения геометрической фигуры, 
+начатой с помощью функции `glBegin()`. Она не принимает никаких аргументов и не возвращает 
+никаких значений. После вызова glEnd() OpenGL заканчивает рисование текущей фигуры и 
+переходит к следующей команде. Однако, в современных версиях OpenGL рекомендуется 
+использовать более новые способы рисования, такие как __Vertex Buffer Objects (VBO)__ или 
+Vertex __Array Objects (VAO)__, а не glBegin() и glEnd().
+
+Система координат OpenGL:  
+
+!()[https://moluch.ru/conf/blmcbn/6212/image003.png]
