@@ -155,7 +155,7 @@ Vertex __Array Objects (VAO)__, а не glBegin() и glEnd().
 
 Система координат OpenGL:  
 
-!()[https://moluch.ru/conf/blmcbn/6212/image003.png]
+![https://moluch.ru/conf/blmcbn/6212/image003.png](https://moluch.ru/conf/blmcbn/6212/image003.png)
 
 
 __3) Виджеты компоновщики__
