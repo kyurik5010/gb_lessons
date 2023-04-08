@@ -30,6 +30,9 @@ __QPaintEngine__ предоставляет интерфейс, которыи
 
 Для начала работы ноебходимо переопределить событие __paintEvent()__:
 <pre><code>
+// в мейне:
+    w.resize(500,500); //фиксируем размеры основного окна
+
 //в заголовочнике, класс QMainWindow:
 
 protected:
@@ -45,8 +48,18 @@ void MainWindow::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     
     //линия
+    painter.drawLine(10, 30, w-10, 30);
+    QPoint p1(20,50);
+    QPoint p1(w-20,50);
+    painter.drawLine(p1, p2); // через 2 точки
+
+    //прямоугольник
+    painter.drawRect(10,70,40,30); //левая верхняя точка, ширина и высота
     
-    
+    //полигон
+    QPolygon poly; //типа контейнера для точек
+    poly << QPoint(10,140) << QPoint(w/2,180) << QPoint(w-10,140);
+    painter.drawPolygon(poly);
     
 }
 </pre></code>
