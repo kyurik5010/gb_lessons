@@ -1,0 +1,9 @@
+these are some basic commandlets for Git 
+git config --list (list global configs)
+git config --global (make global configs)
+git status 
+git add . (stage changes to commit)
+git commit -m commit describtion (simple commit) 
+git commit -am (add and commit everything)
+.gitkeep имя- сохраняет пустую папку в репозитории
+.gitignore - файл содержащий имена игнорируемых файлов echo имя > .gitignore
